@@ -5,8 +5,8 @@ from os import name, system
 from automate import book_search
 
 @click.command()
-@click.option('--bookname', prompt = "Book Title", help='The name of the book you wish to download.')
-@click.option('--author', prompt='Author',
+@click.option('--bookname', '-b' ,prompt = "Book Title", help='The name of the book you wish to download.')
+@click.option('--author', '-a',prompt='Author',
               help='The person who wrote the book.' , required=False)
 @click.option('--publisher', default = "")
 @click.option('--f', default ="", help='A .txt file witch works like a download list')

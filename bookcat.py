@@ -8,22 +8,22 @@ from automate import book_search
 @click.option('--bookname', '-b' ,prompt = "Book Title", help='The name of the book you wish to download.')
 @click.option('--author', '-a',prompt='Author',
               help='The person who wrote the book.' , required=False)
-@click.option('--publisher', default = "")
-@click.option('--f', default ="", help='A .txt file witch works like a download list')
+@click.option('--publisher', '-p', default = "")
+@click.option('--file', '-f',default ="", help='A .txt file witch works like a download list')
 
 
 
-def main(bookname, author,publisher,f):
+def main(bookname, author,publisher,file):
     """Simple program that greets NAME for a total of COUNT times."""
 
-    if f:
-        Lines = file_list(f)
-        print(Lines)
+    if file:
+        Lines = file_list(file)
+        print("List imported!")
         for a in Lines:
             if a != "":
                 print("*** Searching for :", a,'\n')
                 nill = ""
-                db_main(bookname, author, publisher,f)
+                db_main(bookname, author, publisher,0)
                 book_search(a,a,nill)
     else:
         book_search(bookname,author,publisher)

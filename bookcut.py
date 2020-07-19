@@ -1,8 +1,8 @@
 import click
 import pyfiglet
-from db_rules import main as db_main
+from bookcut.db_rules import main as db_main
 from os import name, system
-from automate import book_search, mirror_checker
+from bookcut.automate import book_search, mirror_checker
 
 '''
 @click.command()

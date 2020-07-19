@@ -1,7 +1,7 @@
 import requests
 from urllib.request import urlopen
-from db_rules import updater
-from db_rules import file_checker
+from bookcut.db_rules import updater
+from bookcut.db_rules import file_checker
 from tqdm import tqdm
 import os
 

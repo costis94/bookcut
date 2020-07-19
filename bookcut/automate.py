@@ -2,9 +2,9 @@ import mechanize
 from time import sleep
 from bs4 import BeautifulSoup as Soup
 import requests
-from downloader import file_downloader
-from db_rules import file_checker
-from libgen import epub_finder, file_name
+from bookcut.downloader import file_downloader
+from bookcut.db_rules import file_checker
+from bookcut.libgen import epub_finder, file_name
 import pyfiglet
 
 def downloading(link,name,author,file):

@@ -2,7 +2,7 @@ import click
 import pyfiglet
 from db_rules import main as db_main
 from os import name, system
-from automate import book_search
+from automate import book_search, mirror_checker
 
 '''
 @click.command()

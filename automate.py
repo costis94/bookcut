@@ -20,6 +20,8 @@ def downloading(link,name,author,file):
 
 
 def book_search(name,author,publisher):
+    libgen_working_url = mirror_checker()
+    print("LUBGEN", libgen_working_url)
     file_exists = file_checker(name,author)
     if file_exists is True:
         print('File already exists in Collection!\n' + "=====================================\n")
@@ -63,3 +65,19 @@ def custom_download():
     name = input("Name of Book: ")
     author = input("Author: ")
     book_search(name,author,"")
+
+def mirror_checker():
+    mirrors = ['http://libgen.li/', 'https://libgen.is/', 'https://Libgen.me/',
+    'http://gen.lib.rus.ec/', 'https://Libgen.unblockit.id/', 'http://Libgen.unblocked.pet']
+    for i in mirrors:
+        try:
+            response = br.open(i)
+            r_url = response.geturl()
+            if i == r_url:
+                return i
+                print("HEY" , i)
+                break
+            else:
+                print("No mirrors available")
+        except:
+            pass

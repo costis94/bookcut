@@ -14,7 +14,7 @@ Hello there. BookCut is a very simple python CLI app, that help the user to down
 git clone https://github.com/costis94/bookcut
 ```
 
-* Ensure that an up-to-date version of setuptools is installed:
+* Ensure that an up-to-date version of **setuptools** is installed:
 ```bash
 python -m pip install --upgrade setuptools
 ```
@@ -31,7 +31,7 @@ python setup.py install
 
 * To download a single book:
 ```bash
-python bookcut book -b "1984" -a "George Orwell"
+python bookcut book -b "White Fang" -a "Jack London"
 ```
 
 * To download a list of books:

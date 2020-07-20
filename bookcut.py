@@ -2,13 +2,14 @@ import click
 import pyfiglet
 from os import name, system
 from bookcut.automate import book_search, mirror_checker
+from bookcut.downloader import pathfinder
 
 '''
 @click.command()
-@click.option('--bookname', '-b' ,prompt = "Book Title", help='The name of the book you wish to download.')
+@click.option('--bookname', '-b' ,prompt = "Book Title", required= True, help='The name of the book you wish to download.')
 @click.option('--author', '-a',prompt='Author',
               help='The person who wrote the book.' , required=False)
-@click.option('--publisher', '-p', default = "")
+@click.option('--publisher', '-p', default = " ")
 @click.option('--file', '-f',default ="", help='A .txt file witch works like a download list')
 '''
 
@@ -23,13 +24,15 @@ def main(bookname, author,publisher,file):
 
 
 @entry.command(name='list', help='Download a list of ebook from a .txt file')
-@click.option('--file','-f', help='A .txt file in which books are written in a separate line')
-def download_from_txt(file):
+@click.option('--file','-f', help='A .txt file in which books are written in a separate line' , required = True)
+@click.option('--destination','-d', help= "The destinations folder of the downloaded books" , default = pathfinder())
+def download_from_txt(file,destination):
+        # TODO: To add option for destination of downloaded files
         Lines = file_list(file)
         click.echo("List imported!")
         for a in Lines:
             if a != "":
-                print("*** Searching for :", a,'\n')
+                print("*** Searching for:", a,'\n')
             else:
                 pass
             book_search(a,"","")

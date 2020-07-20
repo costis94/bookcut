@@ -16,11 +16,7 @@ def file_downloader(href,name,author,file):
         pass
     else:
         filename = name + ' - ' + author + ".epub"
-    path = os.path.expanduser('~/Documents/BookCat')
-    if os.path.isdir(path):
-        pass
-    else:
-        os.mkdir(path)
+    path = pathfinder()
 
     filename = os.path.join(path,filename)
 
@@ -34,3 +30,11 @@ def file_downloader(href,name,author,file):
                   pbar.update(len(ch))
 
     print("================================\nFile saved as:",filename)
+
+def pathfinder():
+    path = os.path.expanduser('~/Documents/BookCut')
+    if os.path.isdir(path):
+        pass
+    else:
+        os.mkdir(path)
+    return path

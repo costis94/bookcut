@@ -29,7 +29,7 @@ def book_search(name,author,publisher):
 
     response = br.open(libgen_url)
     br.select_form('libgen')
-    input_form = name + ' ' + author
+    input_form = name + ' ' + author + ' ' + publisher
     br.form['req'] = input_form
     ac = br.submit()
     html_from_page = ac

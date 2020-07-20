@@ -29,12 +29,12 @@ python setup.py install
 
 ## Usage
 
-* To download a single book:
+* To download a **single** book:
 ```bash
 python bookcut book -b "White Fang" -a "Jack London"
 ```
 
-* To download a list of books:
+* To download a **list** of books:
 ```bash
 python bookcut list "FreeEbooksToDownload.txt"
 ```

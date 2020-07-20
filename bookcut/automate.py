@@ -20,8 +20,7 @@ def downloading(link,name,author,file):
 
 
 def book_search(name,author,publisher):
-    libgen_working_url = mirror_checker()
-    print("LUBGEN", libgen_working_url)
+    libgen_url = mirror_checker()
     file_exists = file_checker(name,author)
     if file_exists is True:
         print('File already exists in Collection!\n' + "=====================================\n")
@@ -32,8 +31,8 @@ def book_search(name,author,publisher):
             br.addheaders = [('User-agent', 'Firefox')]
 
 
-            url = "http://libgen.li/"
-            response = br.open(url)
+
+            response = br.open(libgen_url)
             br.select_form('libgen')
             input_form = name + ' ' + author
             br.form['req'] = input_form
@@ -67,17 +66,25 @@ def custom_download():
     book_search(name,author,"")
 
 def mirror_checker():
-    mirrors = ['http://libgen.li/', 'https://libgen.is/', 'https://Libgen.me/',
+    br = mechanize.Browser()
+    br.set_handle_robots(False)   # ignore robots
+    br.set_handle_refresh(False)  #
+    br.addheaders = [('User-agent', 'Firefox')]
+
+    mirrors = ['https://libgen.lc/', 'http://libgen.is/', 'https://Libgen.me/',
     'http://gen.lib.rus.ec/', 'https://Libgen.unblockit.id/', 'http://Libgen.unblocked.pet']
+    
     for i in mirrors:
         try:
             response = br.open(i)
             r_url = response.geturl()
             if i == r_url:
+                #return working mirror
                 return i
-                print("HEY" , i)
                 break
             else:
-                print("No mirrors available")
+                print('No mirrors available or no Internet\n connection!')
         except:
             pass
+
+    br.close()

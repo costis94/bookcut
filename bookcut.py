@@ -1,6 +1,5 @@
 import click
 import pyfiglet
-from bookcut.db_rules import main as db_main
 from os import name, system
 from bookcut.automate import book_search, mirror_checker
 

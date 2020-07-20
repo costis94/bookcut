@@ -1,6 +1,6 @@
 ﻿# BookCut
 
-Hello there. BookCut is a very simple python CLI app, that help the user to download **free ebooks** in epub format.
+BookCut is a very simple python CLI app, that help the user to download **free ebooks** in epub format.
 
 
 

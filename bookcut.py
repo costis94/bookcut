@@ -27,7 +27,6 @@ def main(bookname, author,publisher,file):
 @click.option('--file','-f', help='A .txt file in which books are written in a separate line' , required = True)
 @click.option('--destination','-d', help= "The destinations folder of the downloaded books" , default = pathfinder())
 def download_from_txt(file,destination):
-        # TODO: To add option for destination of downloaded files
         Lines = file_list(file)
         click.echo("List imported!")
         for a in Lines:
@@ -35,14 +34,16 @@ def download_from_txt(file,destination):
                 print("*** Searching for:", a,'\n')
             else:
                 pass
-            book_search(a,"","")
+            book_search(a,"","",destination)
+
 @entry.command(name = 'book',help = 'Download a book in epub format, by inserting \n the title and the author')
 @click.option('--bookname','-b',help="Title of Book", required = True)
-@click.option('--author', '-a', help='The author of the Book')
+@click.option('--author', '-a', help='The author of the Book' , default = " ")
 @click.option('--publisher', '-p', default = '')
-def download_by_name(bookname,author,publisher):
+@click.option('--destination','-d', help= "The destinations folder of the downloaded books" , default = pathfinder())
+def download_by_name(bookname,author,publisher,destination):
     print("Searching for", bookname, "by", author)
-    book_search(bookname,author,publisher)
+    book_search(bookname,author,publisher,destination)
 
 def file_list(filename):
     file1 = open(filename, 'r')

@@ -6,7 +6,7 @@ from bookcut.downloader import file_downloader
 from bookcut.libgen import epub_finder, file_name
 import pyfiglet
 
-def downloading(link,name,author,file):
+def downloading(link,name,author,file,destination_folder):
     page = requests.get(link)
     resp = page.status_code
     soup = Soup(page.content, 'html.parser')
@@ -15,10 +15,10 @@ def downloading(link,name,author,file):
 
     #print(searcher[0])
     searcher_link = searcher[0]
-    file_downloader(searcher_link,name,author,file)
+    file_downloader(searcher_link,name,author,file,destination_folder)
 
 
-def book_search(name,author,publisher):
+def book_search(name,author,publisher,destination_folder):
     libgen_url = mirror_checker()
     br = mechanize.Browser()
     br.set_handle_robots(False)   # ignore robots
@@ -44,7 +44,7 @@ def book_search(name,author,publisher):
         print("\nDownloading Link: FOUND")
         print(Downloading_page)
         nameofbook = file_name(Downloading_page)
-        downloading(Downloading_page,name,author,nameofbook)
+        downloading(Downloading_page,name,author,nameofbook,destination_folder)
     except IndexError:
         print("\nDownloading Link:  NOT FOUND")
         pass

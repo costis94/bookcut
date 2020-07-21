@@ -4,10 +4,11 @@ BookCut is a very simple python CLI app, that help the user to download **free e
 
 
 
-##REQUIREMENTS
+## REQUIREMENTS
 
-The only requirement is to have installed Python 3.
-This is a Python 3 project that will not work with Python2.
+* Python 3
+* python3-pip
+
 
 ## Installation
 

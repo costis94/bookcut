@@ -29,6 +29,11 @@ python -m pip install --upgrade setuptools
 ```bash
 python setup.py install
 ```
+or if you have also python2 installed specify the python version:
+
+```bash
+python3 setup.py install"
+```
 
 
 ## Usage

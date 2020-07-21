@@ -38,6 +38,10 @@ python bookcut book -b "White Fang" -a "Jack London"
 ```bash
 python bookcut list "FreeEbooksToDownload.txt"
 ```
+## TO-DO
+* To add organize option, which will organize books in folders according to subjects
+* To add option for searching in Sci-Hub 
+* To add searching option with subject keyword for example "nonfiction"
 
 ## Copyrights
 Please use the bookcut app to download **only free ebooks** that are legally distributing through *Libgen.*

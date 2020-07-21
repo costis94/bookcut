@@ -59,6 +59,7 @@ python3 bookcut.py list "FreeEbooksToDownload.txt"
 ```
 
 ## TO-DO
+* Add Interactive mode with TUI
 * To add organize option, which will organize books in folders according to subjects
 * To add option for searching in Sci-Hub
 * To add searching option with subject keyword for example "nonfiction"

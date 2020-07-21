@@ -33,7 +33,7 @@ python setup.py install
 or if you have also python2 installed specify the python version:
 
 ```bash
-python3 setup.py install"
+python3 setup.py install
 ```
 
 
@@ -41,7 +41,7 @@ python3 setup.py install"
 
 * To download a **single** book:
 ```bash
-python bookcut book -b "White Fang" -a "Jack London"
+python bookcut.py book -b "White Fang" -a "Jack London"
 ```
 or if you have also python2 installed specify the python version:
 

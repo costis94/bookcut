@@ -4,7 +4,10 @@ BookCut is a very simple python CLI app, that help the user to download **free e
 
 
 
+##REQUIREMENTS
 
+The only requirement is to have installed Python 3.
+This is a Python 3 project that will not work with Python2.
 
 ## Installation
 
@@ -27,20 +30,31 @@ python -m pip install --upgrade setuptools
 python setup.py install
 ```
 
+
 ## Usage
 
 * To download a **single** book:
 ```bash
 python bookcut book -b "White Fang" -a "Jack London"
 ```
+or if you have also python2 installed specify the python version:
+
+```bash
+python3 bookcut.py book -b "White Fang" -a "Jack London"
+```
 
 * To download a **list** of books:
 ```bash
-python bookcut list "FreeEbooksToDownload.txt"
+python bookcut.py list "FreeEbooksToDownload.txt"
 ```
+or if you have also python2 installed specify the python version:
+```bash
+python3 bookcut.py list "FreeEbooksToDownload.txt"
+```
+
 ## TO-DO
 * To add organize option, which will organize books in folders according to subjects
-* To add option for searching in Sci-Hub 
+* To add option for searching in Sci-Hub
 * To add searching option with subject keyword for example "nonfiction"
 
 ## Copyrights

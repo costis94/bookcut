@@ -15,13 +15,15 @@ from bookcut.downloader import pathfinder
 
 @click.group(name='commands')
 def entry():
-    """Commands"""
+    """
+    for a single book download you can \n
+    bookcut.py book --bookname "White Fang" -- author "Jack London"
+    \nor  bookcut.py book -b "White Fang" -a "Jack London" \n
+*For a more complete help:  bookcut.py [COMMAND] --help\n
+*For example: bookcut.py list --help
+
+    """
     pass
-
-def main(bookname, author,publisher,file):
-    """Simple program that greets NAME for a total of COUNT times."""
-
-
 
 @entry.command(name='list', help='Download a list of ebook from a .txt file')
 @click.option('--file','-f', help='A .txt file in which books are written in a separate line' , required = True)

@@ -43,11 +43,14 @@ def book_search(name, author, publisher, destination_folder):
         nameofbook = file_name(Downloading_page)
 
         decision = input(' * BookCut found "'+ nameofbook + '" do you want do download? [Y/n] ')
+        decision = decision.capitalize()
         while decision != "Y" and decision != "n":
             decision = input(' * BookCut found "'+ nameofbook + '" do you want do download? [Y/n] ')
+
+
         if decision == "Y":
             downloading(Downloading_page,name,author,nameofbook,destination_folder)
-        elif decision == "n":
+        elif decision == "N":
             print("\nDownload aborted, try with a different search!")
 
     except IndexError:

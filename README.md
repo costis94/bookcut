@@ -1,3 +1,4 @@
+
 ﻿# BookCut
 
 BookCut is a very simple python CLI app, that help the user to download **free ebooks** in epub format.
@@ -30,11 +31,6 @@ python -m pip install --upgrade setuptools
 ```bash
 python setup.py install
 ```
-or if you have also python2 installed specify the python version:
-
-```bash
-python3 setup.py install
-```
 
 
 ## Usage
@@ -43,19 +39,10 @@ python3 setup.py install
 ```bash
 python bookcut.py book -b "White Fang" -a "Jack London"
 ```
-or if you have also python2 installed specify the python version:
-
-```bash
-python3 bookcut.py book -b "White Fang" -a "Jack London"
-```
 
 * To download a **list** of books:
 ```bash
 python bookcut.py list "FreeEbooksToDownload.txt"
-```
-or if you have also python2 installed specify the python version:
-```bash
-python3 bookcut.py list "FreeEbooksToDownload.txt"
 ```
 
 ## TO-DO
@@ -63,6 +50,7 @@ python3 bookcut.py list "FreeEbooksToDownload.txt"
 * To add organize option, which will organize books in folders according to subjects
 * To add option for searching in Sci-Hub
 * To add searching option with subject keyword for example "nonfiction"
+* To add a simple logger.
 
 ## Copyrights
 Please use the bookcut app to download **only free ebooks** that are legally distributing through *Libgen.*

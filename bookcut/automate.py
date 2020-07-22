@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup as Soup
 import requests
 from bookcut.downloader import file_downloader
 from bookcut.libgen import epub_finder, file_name
+from bookcut.mirror_checker import main as mirror_checker
 import pyfiglet
 
 
@@ -44,7 +45,7 @@ def book_search(name, author, publisher, destination_folder):
 
         decision = input(' * BookCut found "'+ nameofbook + '" do you want do download? [Y/n] ')
         decision = decision.capitalize()
-        while decision != "Y" and decision != "n":
+        while decision != "Y" and decision != "N":
             decision = input(' * BookCut found "'+ nameofbook + '" do you want do download? [Y/n] ')
 
 
@@ -68,26 +69,3 @@ def custom_download():
     name = input("Name of Book: ")
     author = input("Author: ")
     book_search(name, author, "")
-
-def mirror_checker():
-    br = mechanize.Browser()
-    br.set_handle_robots(False)   # ignore robots
-    br.set_handle_refresh(False)  #
-    br.addheaders = [('User-agent', 'Firefox')]
-
-    mirrors = ['https://libgen.lc/', 'http://libgen.is/', 'https://Libgen.me/',
-    'http://gen.lib.rus.ec/', 'https://Libgen.unblockit.id/', 'http://Libgen.unblocked.pet']
-
-    for i in mirrors:
-        try:
-            response = br.open(i)
-            r_url = response.geturl()
-            if i == r_url:
-                return i    # return working mirror
-                break
-            else:
-                print('No mirrors available or no Internet\n connection!')
-        except:
-            pass
-
-    br.close()

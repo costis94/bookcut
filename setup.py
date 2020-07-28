@@ -10,10 +10,10 @@ if sys.version_info.major < 3:
 setuptools.setup(
     name="BookCat",
     python_requires='>3.5.2',
-    version="0.5",
+    version="1.0",
     author="Costis94",
     author_email="gravitymusician@gmail.com",
-    description="A small example package",
+    description="Command Line Interface app to download ebooks",
     url="https://github.com/pypa/sampleproject",
     packages=setuptools.find_packages(),
     classifiers=[
@@ -27,6 +27,11 @@ setuptools.setup(
         'requests',
         'beautifulsoup4',
         'pyfiglet',
-        'mechanize']
+        'mechanize'],
+    entry_points='''
+        [console_scripts]
+        bookcut=bookcut.bookcut:entry
+        ''',
+
 
     )

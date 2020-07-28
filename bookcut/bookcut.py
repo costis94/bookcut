@@ -1,20 +1,20 @@
 import click
 import pyfiglet
-from os import name, system
+import shutil
+from os import name, system, listdir
 from bookcut.automate import book_search, mirror_checker
 from bookcut.downloader import pathfinder
 
-'''
-@click.command()
-@click.option('--bookname', '-b' ,prompt = "Book Title", required= True, help='The name of the book you wish to download.')
-@click.option('--author', '-a',prompt='Author',
-              help='The person who wrote the book.' , required=False)
-@click.option('--publisher', '-p', default = " ")
-@click.option('--file', '-f',default ="", help='A .txt file witch works like a download list')
-'''
-
+from bookcut.organise import get_books as get_books
+from bookcut.organise import scraper
+from bookcut.cutpaste import main as cutpaste
 @click.group(name='commands')
 def entry():
+    clean_screen()
+    title= pyfiglet.figlet_format("BookCut")
+    print(title,'\n', "**********************************")
+    print("Welcome to BookCut!  I'm here to help you \n to read your favourite books! \n")
+
     """
     for a single book download you can \n
     bookcut.py book --bookname "White Fang" -- author "Jack London"
@@ -59,10 +59,27 @@ def clean_screen():
     else:
         _ = system('clear')
 
+@entry.command(name = 'organise',help = 'Organise the ebooks in folders according\n according to genre')
+@click.option('--directory','-d',help="Directory of source ", required = True,
+default = pathfinder())
+@click.option('--output', '-o', help="The destination folder of organised books", default = pathfinder())
+def organiser(directory, output):
+    print(" = BookCut is starting to \norganise your books!")
+    book_list = get_books(directory)
+    namepath = listdir(directory)
+    for i in range(0,len(book_list)):
+        a = book_list[i].split('-')
+        book = a[1]
+        author = a[0]
+        a = scraper(book, author)
+        print("\n***",book, "  ", author)
+        a = a['genre']
+        filename = namepath[i]
+        cutpaste(directory, a , filename)
+
+
+
+
 
 if __name__ == '__main__':
-    clean_screen()
-    title= pyfiglet.figlet_format("BookCut")
-    print(title,'\n', "**********************************")
-    print("Welcome to BookCut!  I'm here to help you \n to read your favourite books! \n")
     entry()

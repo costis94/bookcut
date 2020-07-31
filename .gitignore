@@ -1,2 +1,5 @@
 __pycache__/
 bookdb.db
+BookCat.egg-info/
+build/
+dist/

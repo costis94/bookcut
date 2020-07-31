@@ -4,15 +4,18 @@ import shutil
 from os import name, system, listdir
 from bookcut.automate import book_search, mirror_checker
 from bookcut.downloader import pathfinder
-
 from bookcut.organise import get_books as get_books
 from bookcut.organise import scraper
 from bookcut.cutpaste import main as cutpaste
+from bookcut.search import search
+from bookcut.search import search_downloader, link_finder
+
+
 @click.group(name='commands')
 def entry():
     clean_screen()
-    title= pyfiglet.figlet_format("BookCut")
-    print(title,'\n', "**********************************")
+    title = pyfiglet.figlet_format("BookCut")
+    print(title, '\n', "**********************************")
     print("Welcome to BookCut!  I'm here to help you \n to read your favourite books! \n")
 
     """
@@ -27,7 +30,7 @@ def entry():
 
 @entry.command(name='list', help='Download a list of ebook from a .txt file')
 @click.option('--file','-f', help='A .txt file in which books are written in a separate line' , required = True)
-@click.option('--destination','-d', help= "The destinations folder of the downloaded books" , default = pathfinder())
+@click.option('--destination','-d', help= "The destinations folder of the downloaded books" , default=pathfinder())
 def download_from_txt(file,destination):
         Lines = file_list(file)
         click.echo("List imported!")
@@ -36,16 +39,17 @@ def download_from_txt(file,destination):
                 print("*** Searching for:", a,'\n')
             else:
                 pass
-            book_search(a,"","",destination)
+            book_search(a, "", "", destination)
 
-@entry.command(name = 'book',help = 'Download a book in epub format, by inserting \n the title and the author')
-@click.option('--bookname','-b',help="Title of Book", required = True)
-@click.option('--author', '-a', help='The author of the Book' , default = " ")
-@click.option('--publisher', '-p', default = '')
+
+@entry.command(name='book', help='Download a book in epub format, by inserting \n the title and the author')
+@click.option('--bookname', '-b', help="Title of Book", required=True)
+@click.option('--author', '-a', help='The author of the Book', default=" ")
+@click.option('--publisher', '-p', default='')
 @click.option('--destination','-d', help= "The destinations folder of the downloaded books" , default = pathfinder())
-def download_by_name(bookname,author,publisher,destination):
+def download_by_name(bookname, author, publisher, destination):
     print("Searching for", bookname, "by", author)
-    book_search(bookname,author,publisher,destination)
+    book_search(bookname, author, publisher, destination)
 
 def file_list(filename):
     file1 = open(filename, 'r')
@@ -59,10 +63,11 @@ def clean_screen():
     else:
         _ = system('clear')
 
-@entry.command(name = 'organise',help = 'Organise the ebooks in folders according\n according to genre')
+
+@entry.command(name='organise', help='Organise the ebooks in folders according\n according to genre')
 @click.option('--directory','-d',help="Directory of source ", required = True,
 default = pathfinder())
-@click.option('--output', '-o', help="The destination folder of organised books", default = pathfinder())
+@click.option('--output', '-o', help="The destination folder of organised books", default=pathfinder())
 def organiser(directory, output):
     print(" = BookCut is starting to \norganise your books!")
     book_list = get_books(directory)
@@ -78,7 +83,17 @@ def organiser(directory, output):
         cutpaste(directory, a , filename)
 
 
-
+@entry.command(name='search', help='Search LibGen')
+@click.option('--term', '-t', help='Term for searching', required=True)
+def searching(term):
+        c = search(term)
+        if c is not None:
+            link = c[0]
+            ext = c[1]
+            details = link_finder(link)
+            filename = details[0]
+            file_link = details[1]
+            search_downloader(filename, file_link)
 
 
 if __name__ == '__main__':

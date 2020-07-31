@@ -35,30 +35,36 @@ sudo python setup.py install
 
 ## Usage
 
-* To download a **single** book:
+* Download a **single** book:
 ```bash
 bookcut book -b "White Fang" -a "Jack London"
 ```
 
-* To download a **list** of books:
+* Download a **list** of books:
 ```bash
 bookcut list "FreeEbooksToDownload.txt"
 ```
 
-* To organize a **folder** full of e-books to folders according to genre:
+* Organise a **folder** full of e-books to folders according to genre:
 ```bash
 bookcut organise "full/path/to/folder"
 ```
 
+* Search **LibGen**, output the results and download e-book:
+```bash
+bookcut search -t 'Homer Odyssey'
+```
+
 ## TO-DO
 * Add Interactive mode with TUI
-* To add option for searching in Sci-Hub
-* To add searching option with subject keyword for example "nonfiction"
-* To add a simple logger.
+* Add more sources with free e-books
+* Add option for search a book's details by name or ISBN
+* Fix organiser so it can use all types of files
+* Add a simple logger.
 
 ## Copyrights
 Please use the bookcut app to download **only free e-books** that are legally distributing through *Libgen.*
-Bookcut contributors do not have any responsibility for the use of the app.
+Bookcut contributors do not have any responsibility for the use of the tool.
 ## Contributing
 Pull requests are welcome, this is my first project so be kind.
 For major changes, please open an issue first to discuss what you would like to change.

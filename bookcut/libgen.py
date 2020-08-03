@@ -34,6 +34,8 @@ def epub_finder(soup):
 def file_name(url):
     page = requests.get(url)
     soup = soupa(page.content, 'html.parser')
-
-    r = soup.find('input')['value']
-    return r
+    if soup is not None:
+            r = soup.find('input')['value']
+            return r
+    else:
+        return None

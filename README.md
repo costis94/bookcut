@@ -55,10 +55,20 @@ bookcut organise "full/path/to/folder"
 bookcut search -t 'Homer Odyssey'
 ```
 
+* Get the **details** of a book by **title and author**, or simply **ISBN**.
+```bash
+bookcut details -b 'Homer Iliad'
+```
+
+* Get a list with *all the books* from an **author**,with an option to save to .txt:
+```bash
+bookcut all-books -author 'Stephen King'
+```
+
 ## TO-DO
+* Add forced option for list download
 * Add Interactive mode with TUI
 * Add more sources with free e-books
-* Add option for search a book's details by name or ISBN
 * Fix organiser so it can use all types of files
 * Add a simple logger.
 

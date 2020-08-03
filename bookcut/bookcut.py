@@ -7,8 +7,10 @@ from bookcut.downloader import pathfinder
 from bookcut.organise import get_books as get_books
 from bookcut.organise import scraper
 from bookcut.cutpaste import main as cutpaste
-from bookcut.search import search
-from bookcut.search import search_downloader, link_finder
+from bookcut.search import search_downloader, link_finder, search
+from bookcut.book_details import main as detailing
+from bookcut.bibliography import main as allbooks
+from bookcut.bibliography import save_to_txt
 
 
 @click.group(name='commands')
@@ -16,8 +18,8 @@ def entry():
     clean_screen()
     title = pyfiglet.figlet_format("BookCut")
     print(title, '\n', "**********************************")
-    print("Welcome to BookCut!  I'm here to help you \n to read your favourite books! \n")
-
+    print("  Welcome to BookCut!  I'm here to \n  help you to read your favourite books! ")
+    print(' **********************************')
     """
     for a single book download you can \n
     bookcut.py book --bookname "White Fang" -- author "Jack London"
@@ -31,14 +33,16 @@ def entry():
 @entry.command(name='list', help='Download a list of ebook from a .txt file')
 @click.option('--file','-f', help='A .txt file in which books are written in a separate line' , required = True)
 @click.option('--destination','-d', help= "The destinations folder of the downloaded books" , default=pathfinder())
+
 def download_from_txt(file,destination):
         Lines = file_list(file)
         click.echo("List imported!")
+        temp =  1
+        many = len(Lines) - 1
         for a in Lines:
             if a != "":
-                print("*** Searching for:", a,'\n')
-            else:
-                pass
+                print(f"~[{temp}/{many}] Searching for:", a, '\n')
+                temp = temp + 1
             book_search(a, "", "", destination)
 
 
@@ -52,8 +56,11 @@ def download_by_name(bookname, author, publisher, destination):
     book_search(bookname, author, publisher, destination)
 
 def file_list(filename):
-    file1 = open(filename, 'r')
+    file1 = open(filename, 'r', encoding='utf-8')
     Lines = file1.readlines()
+    for i in Lines:
+        if i == '\n':
+            Lines.remove(i)
     return Lines
 
 def clean_screen():
@@ -64,7 +71,7 @@ def clean_screen():
         _ = system('clear')
 
 
-@entry.command(name='organise', help='Organise the ebooks in folders according\n according to genre')
+@entry.command(name='organise', help='Organise the ebooks in folders according\n to genre')
 @click.option('--directory','-d',help="Directory of source ", required = True,
 default = pathfinder())
 @click.option('--output', '-o', help="The destination folder of organised books", default=pathfinder())
@@ -83,8 +90,27 @@ def organiser(directory, output):
         cutpaste(directory, a , filename)
 
 
-@entry.command(name='search', help='Search LibGen')
-@click.option('--term', '-t', help='Term for searching', required=True)
+@entry.command(name='all-books', help="Search and return all the books from an author")
+@click.option('--author', '-a', required=True, help='Author name')
+@click.option('--ratio', '-r',help='Ratio for filtering  book results', default='0.7', type=float)
+def bibliography(author, ratio):
+    print(f'\n ~Searching for all books by {author}~')
+    lista = allbooks(author, ratio)
+    if lista is not None:
+        print('**********************************')
+        choice = 'y or n'
+        while choice != 'Y' or choice != 'N':
+            choice = input('\nDo you wish to save the list? [Y/n]: ')
+            choice = choice.capitalize()
+            if choice == 'Y':
+                save_to_txt(lista,pathfinder(), author)
+                break
+            elif choice == 'N':
+                print('Aborted.')
+                break
+
+@entry.command(name='search', help='Search LibGen and choose a book to download')
+@click.option('--term', '-t', help='Term for searching')
 def searching(term):
         c = search(term)
         if c is not None:
@@ -95,6 +121,12 @@ def searching(term):
             file_link = details[1]
             search_downloader(filename, file_link)
 
+
+@entry.command(name='details', help='Search the details of a book')
+@click.option('--book', '-b', help='Enter book & author or the ISBN number.',
+              required=True, default=None)
+def details(book):
+    detailing(book)
 
 if __name__ == '__main__':
     entry()

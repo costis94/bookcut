@@ -10,7 +10,7 @@ if sys.version_info.major < 3:
 setuptools.setup(
     name="BookCat",
     python_requires='>3.5.2',
-    version="1.1",
+    version="1.2",
     author="Costis94",
     author_email="gravitymusician@gmail.com",
     description="Command Line Interface app to download ebooks",

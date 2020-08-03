@@ -1,5 +1,4 @@
 import requests
-from bs4 import BeautifulSoup as Soup
 import json
 import re
 from difflib import SequenceMatcher

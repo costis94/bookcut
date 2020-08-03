@@ -1,5 +1,4 @@
 import requests
-from urllib.request import urlopen
 from tqdm import tqdm
 import os
 
@@ -18,11 +17,10 @@ def file_downloader(href,name,author,file,destination_folder):
         filename = name + ' - ' + author + ".epub"
     path = destination_folder
 
-    filename = os.path.join(path,filename)
-
+    filename = os.path.join(path, filename)
 
     try:
-        with open(filename,'wb') as f:
+        with open(filename, 'wb') as f:
             ''' For progress bar '''
             with tqdm(total=total_size, unit='iB',
                    unit_scale=True) as pbar:
@@ -31,9 +29,11 @@ def file_downloader(href,name,author,file,destination_folder):
                       f.write(ch)
                       pbar.update(len(ch))
 
-        print("================================\nFile saved as:",filename)
+        print("================================\nFile saved as:", filename)
     except FileNotFoundError:
         print("ERROR! Is the destination folder exists? ")
+
+
 def pathfinder():
     path = os.path.expanduser('~/Documents/BookCut')
     if os.path.isdir(path):

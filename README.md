@@ -1,8 +1,8 @@
+<img src="https://i.imgur.com/ZUX2ehE.png" width="256" height="69">
 
-## BookCut
-
-BookCut is a very simple python CLI app, that help the user to download **free e-books** in e-pub format.
-
+BookCut is a Python Command Line Interface tool, that help the user to download **free e-books**,
+**organise** them in folders by genre, **retrieve** book details by *ISBN* or *title*,
+get a list with **all the books from a writer** and save them to .txt file.
 
 
 ## REQUIREMENTS
@@ -66,11 +66,10 @@ bookcut all-books -author 'Stephen King'
 ```
 
 ## TO-DO
-* Add forced option for list download
-* Add Interactive mode with TUI
+* Add to pip
 * Add more sources with free e-books
 * Fix organiser so it can use all types of files
-* Add a simple logger.
+* Add a logger.
 
 ## Copyrights
 Please use the bookcut app to download **only free e-books** that are legally distributing through *Libgen.*

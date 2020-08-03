@@ -10,7 +10,6 @@ def main(term):
     jason = requests.get(search_url)
     jason = jason.text
     data = json.loads(jason)
-    json_formatted_str = json.dumps(data, indent=2)
     try:
         data = data['docs'][0]
     except IndexError:
@@ -26,7 +25,7 @@ def main(term):
             lang = data['language']
         except KeyError:
             lang = None
-        
+
         print("Results for search: ", term, '\n')
         print("Title:", title)
         print('Author(s):', author, '\n')

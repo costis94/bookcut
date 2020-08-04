@@ -1,3 +1,4 @@
+
 <img src="https://i.imgur.com/ZUX2ehE.png" width="256" height="69">
 
 BookCut is a Python Command Line Interface tool, that help the user to download **free e-books**,
@@ -13,23 +14,24 @@ get a list with **all the books from a writer** and save them to .txt file.
 
 ## Installation
 
-*    **Download** or **clone** the project:
+* **Install with pip:**
 
+```bash
+pip install bookcut
+#or if you have also Python 2
+pip3 install bookcut
+```
+
+* Or **manually** install:
 ```bash
 git clone https://github.com/costis94/bookcut
-```
 
-* Ensure that an up-to-date version of **setuptools** is installed:
-```bash
+#ensure that setup is already the newest version
 python -m pip install --upgrade setuptools
-```
 
-* cd into the root directory where setup.py is located
-
-* Install project:
-
-```bash
+#cd to bookcut directory
 sudo python setup.py install
+
 ```
 
 
@@ -66,7 +68,6 @@ bookcut all-books -author 'Stephen King'
 ```
 
 ## TO-DO
-* Add to pip
 * Add more sources with free e-books
 * Fix organiser so it can use all types of files
 * Add a logger.

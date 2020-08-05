@@ -39,5 +39,5 @@ def pathfinder():
     if os.path.isdir(path):
         pass
     else:
-        os.mkdir(path)
+        os.makedirs(path)
     return path

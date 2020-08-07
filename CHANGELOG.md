@@ -1,6 +1,17 @@
 ﻿# Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.2.3] - 07_Aug_2020
+
+### Fixed
+- [Bug] Issue#6 Forced list error. 
+
+
+## [1.2.2] - 03_Aug_2020
+
+### Fixed
+- [Bug] Issue with FileNotFoundError, when no home/Documents directory existed.
+
 
 ## [1.2.1] - 03_Aug_2020
 

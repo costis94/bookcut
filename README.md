@@ -22,18 +22,6 @@ pip install bookcut
 pip3 install bookcut
 ```
 
-* Or **manually** install:
-```bash
-git clone https://github.com/costis94/bookcut
-
-#ensure that setup is already the newest version
-python -m pip install --upgrade setuptools
-
-#cd to bookcut directory
-sudo python setup.py install
-
-```
-
 
 ## Usage
 

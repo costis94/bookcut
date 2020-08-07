@@ -1,6 +1,9 @@
 
 <img src="https://i.imgur.com/ZUX2ehE.png" width="256" height="69">
 
+[![Downloads](https://pepy.tech/badge/bookcut)](https://pepy.tech/project/bookcut) ![pypi](https://img.shields.io/pypi/v/pip.svg)
+
+
 BookCut is a Python Command Line Interface tool, that help the user to download **free e-books**,
 **organise** them in folders by genre, **retrieve** book details by *ISBN* or *title*,
 get a list with **all the books from a writer** and save them to .txt file.

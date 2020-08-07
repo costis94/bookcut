@@ -1,3 +1,4 @@
+import logging
 import click
 import pyfiglet
 from os import name, system, listdir
@@ -10,6 +11,7 @@ from bookcut.search import search_downloader, link_finder, search
 from bookcut.book_details import main as detailing
 from bookcut.bibliography import main as allbooks
 from bookcut.bibliography import save_to_txt
+from bookcut.mirror_checker import main as mirror
 
 
 @click.group(name='commands')
@@ -49,14 +51,14 @@ def download_from_txt(file, destination, forced):
         click.echo(click.style('(!) Forced list downloading', fg='green'))
     else:
         force = False
-        Lines = file_list(file)
-        click.echo("List imported succesfully!")
-        temp = 1
-        many = len(Lines)
-        for a in Lines:
-            if a != "":
-                print(f"~[{temp}/{many}] Searching for:", a,)
-                temp = temp + 1
+    Lines = file_list(file)
+    click.echo("List imported succesfully!")
+    temp = 1
+    many = len(Lines)
+    for a in Lines:
+        if a != "":
+            print(f"~[{temp}/{many}] Searching for:", a,)
+            temp = temp + 1
             book_search(a, "", "", destination, force)
 
 
@@ -152,6 +154,11 @@ def searching(term):
               required=True, default=None)
 def details(book):
     detailing(book)
+
+
+@entry.command(name='config')
+def configure_mode():
+    '''Todo'''
 
 
 if __name__ == '__main__':

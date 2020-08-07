@@ -4,3 +4,4 @@ BookCat.egg-info/
 build/
 dist/
 BookCut.egg-info/
+resources.json

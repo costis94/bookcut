@@ -44,6 +44,9 @@ def link_finder(link):
 
 
 def search(term):
+    # This function is used when searching to LibGen with the command
+    # bookcut search -t "keyword"
+
     url = mirror_checker()
     if url is not None:
         br = mechanize.Browser()
@@ -101,8 +104,8 @@ def search(term):
             choices.append('c')
             while True:
                 tell_me = str(input('\n\nPlease enter a number from 1 to {number}'
-                                    'to download a book or press "C" to abort'
-                                    'search: '.format(number=len(extensions))))
+                                    ' to download a book or press "C" to abort'
+                                    ' search: '.format(number=len(extensions))))
                 if tell_me in choices:
                     if tell_me == 'C' or tell_me == 'c':
                         print("Aborted!")

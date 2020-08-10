@@ -7,9 +7,10 @@ def file_downloader(href,name,author,file,destination_folder):
     response = requests.get(href, stream=True)
     total_size = int(response.headers.get('content-length'))
     inMb = total_size / 1000000
-    inMb = round(inMb,2)
-    print("\nDownloading...\n","Total file size:" , inMb, 'MB')
-###Folder to download books
+    inMb = round(inMb, 2)
+    print("\nDownloading...\n", "Total file size:", inMb, 'MB')
+
+# Folder to download books
     filename = file
     if filename != "":
         pass
@@ -23,11 +24,11 @@ def file_downloader(href,name,author,file,destination_folder):
         with open(filename, 'wb') as f:
             ''' For progress bar '''
             with tqdm(total=total_size, unit='iB',
-                   unit_scale=True) as pbar:
+                      unit_scale=True) as pbar:
                 for ch in response.iter_content(chunk_size=1024):
-                  if ch:
-                      f.write(ch)
-                      pbar.update(len(ch))
+                    if ch:
+                        f.write(ch)
+                        pbar.update(len(ch))
 
         print("================================\nFile saved as:", filename)
     except FileNotFoundError:

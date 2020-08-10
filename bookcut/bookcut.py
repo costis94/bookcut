@@ -1,9 +1,9 @@
-import logging
 import click
 import pyfiglet
 from os import name, system, listdir
+
 from bookcut.automate import book_search
-from bookcut.downloader import pathfinder
+# from bookcut.downloader import pathfinder
 from bookcut.organise import get_books as get_books
 from bookcut.organise import scraper
 from bookcut.cutpaste import main as cutpaste
@@ -11,13 +11,17 @@ from bookcut.search import search_downloader, link_finder, search
 from bookcut.book_details import main as detailing
 from bookcut.bibliography import main as allbooks
 from bookcut.bibliography import save_to_txt
-from bookcut.mirror_checker import main as mirror
+# from bookcut.mirror_checker import main as mirror
+from bookcut.settings import initial_config, mirrors_append, read_settings
+from bookcut.settings import screen_setting, print_settings, set_destination, path_checker
 
 
 @click.group(name='commands')
 @click.version_option()
 def entry():
-    clean_screen()
+    # read the settings ini file and check what value for clean screen
+    settings = read_settings()
+    clean_screen(settings[0])
     title = pyfiglet.figlet_format("BookCut")
     click.echo(title)
     click.echo('**********************************')
@@ -41,7 +45,7 @@ def entry():
               required=True)
 @click.option('--destination', '-d',
               help="The destinations folder of the downloaded books",
-              default=pathfinder())
+              default=path_checker())
 @click.option('--forced',
               help='Forced option, accepts all books for downloading',
               is_flag=True)
@@ -69,7 +73,7 @@ def download_from_txt(file, destination, forced):
 @click.option('--publisher', '-p', default='')
 @click.option('--destination', '-d',
               help="The destinations folder of the downloaded books",
-              default=pathfinder())
+              default=path_checker())
 def download_by_name(bookname, author, publisher, destination):
     print("Searching for", bookname, "by", author)
     book_search(bookname, author, publisher, destination, False)
@@ -84,21 +88,22 @@ def file_list(filename):
     return Lines
 
 
-def clean_screen():
+def clean_screen(setting):
     """ Cleans the terminal screen """
-    if name == 'nt':
-        _ = system('cls')
-    else:
-        _ = system('clear')
+    if setting == 'True':
+        if name == 'nt':
+            _ = system('cls')
+        else:
+            _ = system('clear')
 
 
 @entry.command(name='organise',
                help='Organise the ebooks in folders according\n to genre')
 @click.option('--directory', '-d', help="Directory of source ", required=True,
-              default=pathfinder())
+              default=path_checker())
 @click.option('--output', '-o',
               help="The destination folder of organised books",
-              default=pathfinder())
+              default=path_checker())
 def organiser(directory, output):
     print(" = BookCut is starting to \norganise your books!")
     book_list = get_books(directory)
@@ -129,7 +134,7 @@ def bibliography(author, ratio):
             choice = input('\nDo you wish to save the list? [Y/n]: ')
             choice = choice.capitalize()
             if choice == 'Y':
-                save_to_txt(lista, pathfinder(), author)
+                save_to_txt(lista, path_checker(), author)
                 break
             elif choice == 'N':
                 print('Aborted.')
@@ -156,9 +161,38 @@ def details(book):
     detailing(book)
 
 
-@entry.command(name='config')
-def configure_mode():
-    '''Todo'''
+@entry.command(name='config', help='BookCut settings')
+@click.option('--libgen_add', help="Add a Libgen mirror to mirrors list",
+              default=None)
+@click.option('--restore', help='Restores the settings file to initial state',
+              is_flag=True)
+@click.option('--settings', help='Prints the current BookCut settings',
+              is_flag=True)
+@click.option('--clean_screen', help='You can choose if BookCut will'
+              ' clean terminal screen', is_flag=True)
+@click.option('--download_folder', help="Set BookCut's download folder",
+              default=None)
+def configure_mode(restore, libgen_add, settings, clean_screen,
+                   download_folder):
+    if restore:
+        prompt  = click.confirm('\n Are you sure do you want to restore Settings?')
+        if prompt is True:
+            initial_config()
+        else:
+            click.echo('Aborted!')
+    if libgen_add is not None:
+        click.echo(f'Adding {libgen_add} to mirrors list')
+        mirrors_append(libgen_add)
+    if settings:
+        print_settings()
+    if clean_screen:
+        prompt = click.confirm('\nDo you want Bookcut to clean command line?')
+        if prompt is True:
+            screen_setting('True')
+        else:
+            screen_setting('False')
+    if download_folder is not None:
+        set_destination(download_folder)
 
 
 if __name__ == '__main__':

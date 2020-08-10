@@ -17,7 +17,7 @@ README = (HERE / "README.md").read_text()
 setuptools.setup(
     name="BookCut",
     python_requires='>3.5.2',
-    version="1.2.3",
+    version="1.3.0",
     author="Costis94",
     author_email="gravitymusician@gmail.com",
     description="Command Line Interface app to download ebooks",
@@ -38,6 +38,7 @@ setuptools.setup(
             'pyfiglet',
             'tqdm',
             'mechanize'],
+    include_package_data=True,
     entry_points='''
             [console_scripts]
             bookcut=bookcut.bookcut:entry

@@ -7,6 +7,7 @@
 BookCut is a Python Command Line Interface tool, that help the user to download **free e-books**,
 **organise** them in folders by genre, **retrieve** book details by *ISBN* or *title*,
 get a list with **all the books from a writer** and save them to .txt file.
+*With the help of LibGen and OpenLibrary*
 
 
 ## REQUIREMENTS
@@ -58,7 +59,13 @@ bookcut details -b 'Homer Iliad'
 bookcut all-books -author 'Stephen King'
 ```
 
+* Now you can change some basic settings of BookCut. For more check:
+```bash
+bookcut config --help
+```
+
 ## TO-DO
+* Add documentation
 * Add more sources with free e-books
 * Fix organiser so it can use all types of files
 * Add a logger.

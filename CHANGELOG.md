@@ -1,10 +1,19 @@
 ﻿# Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.3.0] - 10_Aug_2020
+
+### Added
+- Configuration mode, user now can change some basic settings of BookCut like
+destination folder and clear screen option. Also can add more Libgen Mirrors.
+
+### Fixed
+- Some raise errors and some known bugs.
+
 ## [1.2.3] - 07_Aug_2020
 
 ### Fixed
-- [Bug] Issue#6 Forced list error. 
+- [Bug] Issue#6 Forced list error.
 
 
 ## [1.2.2] - 03_Aug_2020

@@ -105,7 +105,7 @@ def clean_screen(setting):
               help="The destination folder of organised books",
               default=path_checker())
 def organiser(directory, output):
-    print(" = BookCut is starting to \norganise your books!")
+    print("\nBookCut is starting to \norganise your books!")
     book_list = get_books(directory)
     namepath = listdir(directory)
     for i in range(0, len(book_list)):
@@ -175,7 +175,7 @@ def details(book):
 def configure_mode(restore, libgen_add, settings, clean_screen,
                    download_folder):
     if restore:
-        prompt  = click.confirm('\n Are you sure do you want to restore Settings?')
+        prompt = click.confirm('\n Are you sure do you want to restore Settings?')
         if prompt is True:
             initial_config()
         else:

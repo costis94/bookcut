@@ -15,6 +15,9 @@ def similar(a, b, similarity):
 
 
 def main(author, similarity):
+    # returns all the books writen by an author from openlibrary
+    # using similarity for filtering the results
+
     search_url = "http://openlibrary.org/search.json?author=" + author
     jason = requests.get(search_url)
     jason = jason.text
@@ -34,12 +37,12 @@ def main(author, similarity):
                  ' from ', 'on', 'The', 'in']
 
         noise_re = re.compile('\\b(%s)\\W'%('|'.join(map(re.escape,words))),re.I)
-        clean_mylist = [noise_re.sub('',p) for p in mylist]
+        clean_mylist = [noise_re.sub('', p) for p in mylist]
 
 
         for i in clean_mylist:
             for j in clean_mylist:
-                a = similar(i,j, similarity)
+                a = similar(i, j, similarity)
                 if a == True:
                     clean_mylist.pop(a)
 
@@ -53,18 +56,12 @@ def main(author, similarity):
         print('Please try again!')
         return None
 
+
 def save_to_txt(lista, path, author):
+    # save the books list to txt file.
     for content in lista:
         name = f'{author}_bibliography.txt'
         full_path = os.path.join(path, name)
         with open(full_path, 'a', encoding='utf-8') as f1:
             f1.write(content + ' ' + author + os.linesep)
     print('\nList saved at: ', full_path, '\n')
-
-
-
-
-if __name__ == '__main__':
-
-    ins = input('Name: ')
-    main(ins)

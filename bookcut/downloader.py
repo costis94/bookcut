@@ -2,8 +2,8 @@ import requests
 from tqdm import tqdm
 import os
 
-def file_downloader(href,name,author,file,destination_folder):
-    #print('Beginning file downloading...')
+
+def file_downloader(href, name, author, file, destination_folder):
     response = requests.get(href, stream=True)
     total_size = int(response.headers.get('content-length'))
     inMb = total_size / 1000000

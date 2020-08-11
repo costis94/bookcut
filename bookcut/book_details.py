@@ -3,6 +3,7 @@ import json
 
 
 def main(term):
+    # searching OpenLibrary and prints the details of a book
     if term is None:
         term =input("Please enter the book and the author, or the ISBN of the book.")
     term = term.replace(' ', '+')
@@ -32,8 +33,4 @@ def main(term):
         print('ISBN(s):', isbn, '\n')
         if lang is not None:
             print('Language(s): ', )
-        print('\nFirst published: ',first_publish_year)
-
-if __name__ == '__main__':
-    n = None
-    main(n)
+        print('\nFirst published: ', first_publish_year)

@@ -1,6 +1,5 @@
 import requests
 import configparser
-import logging
 import os
 
 

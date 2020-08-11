@@ -1,7 +1,6 @@
 from os import listdir
 from os import path
 import requests
-from bs4 import BeautifulSoup as Soup
 import json
 
 
@@ -13,6 +12,7 @@ def get_books(dir):
             renamed = renamed.replace('_', " ")
             epub_list.append(renamed)
     return epub_list
+
 
 def scraper(book, author):
         book = book.replace(" ", '+')
@@ -57,13 +57,16 @@ def scraper(book, author):
         if subject is not None:
             for a in subject:
                 x = genre_finder(a)
-                if x  is not None:
+                if x is not None:
                     subject = x
                     break
+                else:
+                    subject = 'Uncategorized'
         else:
             subject = 'Uncategorized'
         book_values.update({'genre': subject})
         return book_values
+
 
 def genre_finder(sub):
     genres = ['Classics','Literary', 'Fiction', 'Historical Fiction',

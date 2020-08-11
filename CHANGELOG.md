@@ -1,6 +1,12 @@
 ﻿# Changelog
 All notable changes to this project will be documented in this file.
 
+
+## [1.3.1] - 11_Aug_2020
+
+### Fixed
+- Organise options known bug that could not move some files fixed.
+
 ## [1.3.0] - 10_Aug_2020
 
 ### Added

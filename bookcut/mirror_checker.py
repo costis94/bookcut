@@ -16,7 +16,8 @@ def main():
     for url in mirrors:
         try:
             r = requests.head(url)
-            status = r.status_code == 200
+            if r.status_code == 200 or r.status_code == 301:
+                status = True
             if status is True:
                 return url
                 break

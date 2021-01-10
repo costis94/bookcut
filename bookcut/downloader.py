@@ -3,7 +3,7 @@ from tqdm import tqdm
 import os
 
 
-def file_downloader(href, name, author, file, destination_folder):
+def file_downloader(href, name, author, file, destination_folder, type):
     response = requests.get(href, stream=True)
     total_size = int(response.headers.get('content-length'))
     inMb = total_size / 1000000
@@ -15,7 +15,7 @@ def file_downloader(href, name, author, file, destination_folder):
     if filename != "":
         pass
     else:
-        filename = name + ' - ' + author + ".epub"
+        filename = name + ' - ' + author + type
     path = destination_folder
 
     filename = os.path.join(path, filename)

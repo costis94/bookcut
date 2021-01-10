@@ -6,7 +6,7 @@ from bookcut.libgen import epub_finder, file_name
 from bookcut.mirror_checker import main as mirror_checker
 
 
-def downloading(link, name, author, file, destination_folder):
+def downloading(link, name, author, file, destination_folder, type):
     '''finds the first available epub and sends the link to file_downloader '''
     page = requests.get(link)
     soup = Soup(page.content, 'html.parser')
@@ -14,7 +14,7 @@ def downloading(link, name, author, file, destination_folder):
     searcher = [a['href'] for a in soup.find_all(href=True) if a.text]
 
     searcher_link = searcher[0]
-    file_downloader(searcher_link, name, author, file, destination_folder)
+    file_downloader(searcher_link, name, author, file, destination_folder, type)
 
 
 def book_search(name, author, publisher, destination_folder, force):

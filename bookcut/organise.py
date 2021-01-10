@@ -7,6 +7,8 @@ import json
 def get_books(dir):
     epub_list = []
     for file in listdir(dir):
+        t = file.split('.')
+        print(t)
         if file.endswith(".epub"):
             renamed = file.replace('.epub', '')
             renamed = renamed.replace('_', " ")

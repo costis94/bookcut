@@ -1,9 +1,10 @@
 import click
 import pyfiglet
+import logging
 from os import name, system, listdir
 
+from bookcut.book import Booksearch
 from bookcut.automate import book_search
-# from bookcut.downloader import pathfinder
 from bookcut.organise import get_books as get_books
 from bookcut.organise import scraper
 from bookcut.cutpaste import main as cutpaste
@@ -11,21 +12,27 @@ from bookcut.search import search_downloader, link_finder, search
 from bookcut.book_details import main as detailing
 from bookcut.bibliography import main as allbooks
 from bookcut.bibliography import save_to_txt
-# from bookcut.mirror_checker import main as mirror
 from bookcut.settings import initial_config, mirrors_append, read_settings
 from bookcut.settings import screen_setting, print_settings, set_destination, path_checker
+
+'''
+logging.basicConfig(level=logging.DEBUG,
+                    format='%(asctime)s %(name)s %(levelname)s:%(message)s')
+logger = logging.getLogger(__name__)
+'''
 
 
 @click.group(name='commands')
 @click.version_option()
 def entry():
+    # logger.info('Started BookCut')
     # read the settings ini file and check what value for clean screen
     settings = read_settings()
     clean_screen(settings[0])
     title = pyfiglet.figlet_format("BookCut")
     click.echo(title)
     click.echo('**********************************')
-    print("  Welcome to BookCut!  I'm here to \n"
+    print("  Welcome to latest BookCut!  I'm here to \n"
           'help you to read your favourite books!')
     print(' **********************************')
     """
@@ -49,12 +56,10 @@ def entry():
 @click.option('--forced',
               help='Forced option, accepts all books for downloading',
               is_flag=True)
-def download_from_txt(file, destination, forced):
+@click.option('--extension', '-ext', help='File type of e-book.')
+def download_from_txt(file, destination, forced, extension):
     if forced:
-        force = True
         click.echo(click.style('(!) Forced list downloading', fg='green'))
-    else:
-        force = False
     Lines = file_list(file)
     click.echo("List imported succesfully!")
     temp = 1
@@ -63,20 +68,22 @@ def download_from_txt(file, destination, forced):
         if a != "":
             print(f"~[{temp}/{many}] Searching for:", a,)
             temp = temp + 1
-            book_search(a, "", "", destination, force)
+            book_find(a, '', '', destination, extension, forced)
 
 
 @entry.command(name='book', help="Download a book in epub format, by inserting"
                '\n the title and the author')
-@click.option('--bookname', '-b', help="Title of Book", required=True)
+@click.option('--book', '-b', help="Title of Book", required=True)
 @click.option('--author', '-a', help='The author of the Book', default=" ")
 @click.option('--publisher', '-p', default='')
 @click.option('--destination', '-d',
               help="The destinations folder of the downloaded books",
               default=path_checker())
-def download_by_name(bookname, author, publisher, destination):
-    print("Searching for", bookname, "by", author)
-    book_search(bookname, author, publisher, destination, False)
+@click.option('--extension', '-ext', help='Filetype of e-book for example:pdf')
+@click.option('--forced', is_flag=True)
+def book(book, author, publisher, destination, extension, forced):
+    click.echo(f'\nSearching for {book} by {author}')
+    book_find(book, author, publisher, destination, extension, forced)
 
 
 def file_list(filename):
@@ -107,6 +114,7 @@ def clean_screen(setting):
 def organiser(directory, output):
     print("\nBookCut is starting to \norganise your books!")
     book_list = get_books(directory)
+    print(book_list)
     namepath = listdir(directory)
     for i in range(0, len(book_list)):
         a = book_list[i].split('-')
@@ -148,6 +156,8 @@ def searching(term):
     c = search(term)
     if c is not None:
         link = c[0]
+        #### TODO: to erase
+        link = 'http://libgen.gs/'+ link
         details = link_finder(link)
         filename = details[0]
         file_link = details[1]
@@ -193,6 +203,19 @@ def configure_mode(restore, libgen_add, settings, clean_screen,
             screen_setting('False')
     if download_folder is not None:
         set_destination(download_folder)
+
+
+def book_find(title, author, publisher, destination, extension, force):
+    book = Booksearch(title, author, publisher, type)
+    result = book.search()
+    extensions = result['extensions']
+    tb = result['table_data']
+    mirrors = result['mirrors']
+    file_details = book.give_result(extensions, tb, mirrors, extension)
+    if file_details is not None:
+        book.cursor(file_details['url'], destination,
+                    file_details['file'], force)
+
 
 
 if __name__ == '__main__':

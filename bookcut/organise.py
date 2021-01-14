@@ -5,12 +5,28 @@ import json
 
 
 def get_books(dir):
+    ''' filtering epub, pdf, txt, mobi, djvu files in the given directory '''
     epub_list = []
     for file in listdir(dir):
         t = file.split('.')
-        print(t)
         if file.endswith(".epub"):
             renamed = file.replace('.epub', '')
+            renamed = renamed.replace('_', " ")
+            epub_list.append(renamed)
+        elif file.endswith(".pdf"):
+            renamed = file.replace('.pdf', '')
+            renamed = renamed.replace('_', " ")
+            epub_list.append(renamed)
+        elif file.endswith('.txt'):
+            renamed = file.replace('.txt', '')
+            renamed = renamed.replace('_', " ")
+            epub_list.append(renamed)
+        elif file.endswith('.mobi'):
+            renamed = file.replace('.mobi', '')
+            renamed = renamed.replace('_', " ")
+            epub_list.append(renamed)
+        elif file.endswith('.djvu'):
+            renamed = file.replace('.djvu', '')
             renamed = renamed.replace('_', " ")
             epub_list.append(renamed)
     return epub_list

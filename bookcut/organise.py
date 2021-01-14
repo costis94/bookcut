@@ -5,7 +5,8 @@ import json
 
 
 def get_books(dir):
-    ''' filtering epub, pdf, txt, mobi, djvu files in the given directory '''
+    ''' filtering epub, pdf, txt, mobi, djvu files in the given directory
+        and return a list with all filenames '''
     epub_list = []
     for file in listdir(dir):
         t = file.split('.')
@@ -33,6 +34,8 @@ def get_books(dir):
 
 
 def scraper(book, author):
+        ''' parsing the book category from OpenLibrary '''
+
         book = book.replace(" ", '+')
         author = author.replace(" ", '+')
 

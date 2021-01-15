@@ -28,5 +28,16 @@ def main():
             pass
 
 
+def openLibraryStatus():
+    url = 'http://www.openlibrary.org'
+    request = requests.head(url)
+    if request.status_code == 200:
+        print('Connected to:', url)
+    else:
+        print('Unable to connect to:', url,
+              '\nPlease check your internet connection and try again later.')
+        return False
+
+
 if __name__ == '__main__':
     main()

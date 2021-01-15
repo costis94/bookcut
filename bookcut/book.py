@@ -16,6 +16,7 @@ class Booksearch:
         self.mirror = None
 
     def search(self):
+        ''' searching libgen and returns table data, extensions and links'''
         url = mirror_checker()
         if url is not None:
             br = mechanize.Browser()
@@ -86,6 +87,7 @@ class Booksearch:
 
     def cursor(self, url, destination_folder,
                extension, forced):
+        ''' asking the user to download a chosen book or to abort'''
         title = str(self.title)
         author = str(self.author)
         nameofbook = file_name(url)

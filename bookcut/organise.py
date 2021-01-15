@@ -9,7 +9,6 @@ def get_books(dir):
         and return a list with all filenames '''
     epub_list = []
     for file in listdir(dir):
-        t = file.split('.')
         if file.endswith(".epub"):
             renamed = file.replace('.epub', '')
             renamed = renamed.replace('_', " ")

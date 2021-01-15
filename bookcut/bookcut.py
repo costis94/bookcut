@@ -1,7 +1,7 @@
 import click
 import pyfiglet
 import logging
-from os import name, system, listdir
+from os import name, system, listdir, scandir
 
 from bookcut.book import Booksearch
 from bookcut.automate import book_search
@@ -21,11 +21,10 @@ logging.basicConfig(level=logging.DEBUG,
 logger = logging.getLogger(__name__)
 '''
 
-
 @click.group(name='commands')
 @click.version_option()
 def entry():
-    # logger.info('Started BookCut')
+    #logger.info('Started BookCut')
     # read the settings ini file and check what value for clean screen
     settings = read_settings()
     clean_screen(settings[0])
@@ -82,7 +81,10 @@ def download_from_txt(file, destination, forced, extension):
 @click.option('--extension', '-ext', help='Filetype of e-book for example:pdf')
 @click.option('--forced', is_flag=True)
 def book(book, author, publisher, destination, extension, forced):
-    click.echo(f'\nSearching for {book} by {author}')
+    if author != ' ':
+        click.echo(f'\nSearching for {book} by {author}')
+    else:
+        click.echo(f'\nSearching for {book}')
     book_find(book, author, publisher, destination, extension, forced)
 
 
@@ -114,17 +116,38 @@ def clean_screen(setting):
 def organiser(directory, output):
     print("\nBookCut is starting to \norganise your books!")
     book_list = get_books(directory)
-    print(book_list)
-    namepath = listdir(directory)
+    # lists only the files in the given directory
+    namepath = []
+    with scandir(directory) as entries:
+        for entry in entries:
+            if entry.is_file():
+                namepath.append(entry.name)
     for i in range(0, len(book_list)):
-        a = book_list[i].split('-')
-        book = a[1]
-        author = a[0]
-        a = scraper(book, author)
-        print("\n***", book, "  ", author)
-        a = a['genre']
-        filename = namepath[i]
-        cutpaste(directory, a, filename)
+        print("File:", namepath[i])
+        try:
+            ''' splitting file name to author and book title for using as
+                searching terms to OpenLibrary'''
+            a = book_list[i].split('by')
+            book = a[1]
+            author = a[0]
+            a = scraper(book, author)
+            print("\n***", book, "  ", author)
+            a = a['genre']
+            filename = namepath[i]
+            cutpaste(directory, a, filename)
+        except IndexError:
+            try:
+                a = book_list[i].split('-')
+                book = a[1]
+                author = a[0]
+                a = scraper(book, author)
+                print("\n***", book, "  ", author)
+                a = a['genre']
+                filename = namepath[i]
+                cutpaste(directory, a, filename)
+            except IndexError:
+                print('Unable to organise this file.\n')
+                pass
 
 
 @entry.command(name='all-books',
@@ -206,15 +229,19 @@ def configure_mode(restore, libgen_add, settings, clean_screen,
 
 
 def book_find(title, author, publisher, destination, extension, force):
-    book = Booksearch(title, author, publisher, type)
-    result = book.search()
-    extensions = result['extensions']
-    tb = result['table_data']
-    mirrors = result['mirrors']
-    file_details = book.give_result(extensions, tb, mirrors, extension)
-    if file_details is not None:
-        book.cursor(file_details['url'], destination,
-                    file_details['file'], force)
+    try:
+        book = Booksearch(title, author, publisher, type)
+        result = book.search()
+        extensions = result['extensions']
+        tb = result['table_data']
+        mirrors = result['mirrors']
+        file_details = book.give_result(extensions, tb, mirrors, extension)
+        if file_details is not None:
+            book.cursor(file_details['url'], destination,
+                        file_details['file'], force)
+    except TypeError:
+        # TODO add logger error
+        pass
 
 
 

@@ -1,4 +1,5 @@
 
+
 <img src="https://i.imgur.com/ZUX2ehE.png" width="256" height="69">
 
 [![Downloads](https://pepy.tech/badge/bookcut)](https://pepy.tech/project/bookcut) ![pypi](https://img.shields.io/pypi/v/pip.svg)
@@ -30,36 +31,43 @@ pip3 install bookcut
 ## Usage
 
 * Download a **single** book:
+
 ```bash
 bookcut book -b "White Fang" -a "Jack London"
 ```
 
 * Download a **list** of books:
+
 ```bash
 bookcut list "FreeEbooksToDownload.txt"
 ```
 
 * Organise a **folder** full of e-books to folders according to genre:
+
 ```bash
 bookcut organise "full/path/to/folder"
 ```
 
 * Search **LibGen**, output the results and download e-book:
+
 ```bash
 bookcut search -t 'Homer Odyssey'
 ```
 
 * Get the **details** of a book by **title and author**, or simply **ISBN**.
+
 ```bash
 bookcut details -b 'Homer Iliad'
 ```
 
 * Get a list with *all the books* from an **author**,with an option to save to .txt:
+
 ```bash
 bookcut all-books -author 'Stephen King'
 ```
 
 * Now you can change some basic settings of BookCut. For more check:
+
 ```bash
 bookcut config --help
 ```

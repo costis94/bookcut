@@ -5,13 +5,9 @@ from difflib import SequenceMatcher
 import os
 from bookcut.mirror_checker import openLibraryStatus
 
-def similar(a, b, similarity):
-    ''' function which check similarity between two strings '''
-    ratio = SequenceMatcher(None, a, b).ratio()
-    if ratio > similarity and ratio < 1:
-        return True
-    else:
-        return False
+'''This file is used by ---allbooks command
+   It is searching OpenLibrary for all books written from an
+   author, and gives the choice to user to save it to a .txt file'''
 
 
 def main(author, similarity):
@@ -34,17 +30,16 @@ def main(author, similarity):
                 mylist = list(dict.fromkeys(books))
 
         #       Filtrering results: trying to erase similar titles
-            words = [' the ', 'The ', ' THE ', ' The' ' a ', ' A ', ' and ', ' of ',
-                     ' from ', 'on', 'The', 'in']
+            words = [' the ', 'The ', ' THE ', ' The' ' a ', ' A ', ' and ',
+                     ' of ', ' from ', 'on', 'The', 'in']
 
-            noise_re = re.compile('\\b(%s)\\W'%('|'.join(map(re.escape,words))),re.I)
+            noise_re = re.compile('\\b(%s)\\W'%('|'.join(map(re.escape, words))), re.I)
             clean_mylist = [noise_re.sub('', p) for p in mylist]
-
 
             for i in clean_mylist:
                 for j in clean_mylist:
                     a = similar(i, j, similarity)
-                    if a == True:
+                    if a is True:
                         clean_mylist.pop(a)
 
             clean_mylist.sort()
@@ -56,6 +51,15 @@ def main(author, similarity):
             print('(!) No valid author name, or bad internet connection.')
             print('Please try again!')
             return None
+
+
+def similar(a, b, similarity):
+    ''' function which check similarity between two strings '''
+    ratio = SequenceMatcher(None, a, b).ratio()
+    if ratio > similarity and ratio < 1:
+        return True
+    else:
+        return False
 
 
 def save_to_txt(lista, path, author):

@@ -28,7 +28,6 @@ def epub_finder(soup):
 
 
 def file_name(url):
-    ## TODO: erase
     print('URL: ',url)
     page = requests.get(url)
     try:

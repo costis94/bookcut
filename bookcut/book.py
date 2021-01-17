@@ -3,10 +3,27 @@ import mechanize
 from bs4 import BeautifulSoup as Soup
 from bookcut.libgen import file_name
 from click import confirm
-from bookcut.automate import downloading
+from bookcut.downloader import downloading
+
+
+def book_find(title, author, publisher, destination, extension, force):
+    try:
+        book = Booksearch(title, author, publisher, type)
+        result = book.search()
+        extensions = result['extensions']
+        tb = result['table_data']
+        mirrors = result['mirrors']
+        file_details = book.give_result(extensions, tb, mirrors, extension)
+        if file_details is not None:
+            book.cursor(file_details['url'], destination,
+                        file_details['file'], force)
+    except TypeError:
+        # TODO add logger error
+        pass
 
 
 class Booksearch:
+    ''' searching libgen original page and returns book details and mirror link'''
 
     def __init__(self, title, author, publisher, filetype):
         self.title = title
@@ -45,7 +62,9 @@ class Booksearch:
                         # scrape mirror links
                         if j == 9:
                             temp = tr.find('a', href=True)
-                            mirrors.append(temp['href'])
+                            #add also mirror link
+                            mirror_page = url + temp['href']
+                            mirrors.append(mirror_page)
                         j = j + 1
                     row = [tr.text for tr in td]
                     table_data.append(row)

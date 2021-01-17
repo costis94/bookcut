@@ -17,12 +17,12 @@ README = (HERE / "README.md").read_text()
 setuptools.setup(
     name="BookCut",
     python_requires='>3.5.2',
-    version="1.3.2",
+    version="1.3.3",
     author="Costis94",
     author_email="gravitymusician@gmail.com",
     description="Command Line Interface app to download ebooks",
-    long_description=README,
     long_description_content_type="text/markdown",
+    long_description=README,
     url="https://github.com/costis94/bookcut",
     packages=setuptools.find_packages(),
     classifiers=[

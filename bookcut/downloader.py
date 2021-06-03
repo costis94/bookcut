@@ -1,14 +1,27 @@
 import requests
 from tqdm import tqdm
 import os
+from bs4 import BeautifulSoup as Soup
+
+
+def downloading(link, name, author, file, destination_folder, type):
+    '''finds the first available book and sends the link to file_downloader '''
+    page = requests.get(link)
+    soup = Soup(page.content, 'html.parser')
+
+    searcher = [a['href'] for a in soup.find_all(href=True) if a.text]
+
+    searcher_link = searcher[0]
+    file_downloader(searcher_link, name, author, file, destination_folder, type)
 
 
 def file_downloader(href, name, author, file, destination_folder, type):
+    '''Downloads the book file to users folder'''
     response = requests.get(href, stream=True)
     total_size = int(response.headers.get('content-length'))
     inMb = total_size / 1000000
     inMb = round(inMb, 2)
-    print("\nDownloading...\n", "Total file size:", inMb, 'MB')
+    print("\nDownloading...", "\nTotal file size:", inMb, 'MB')
 
 # Folder to download books
     filename = file

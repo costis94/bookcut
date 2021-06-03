@@ -3,54 +3,75 @@ import mechanize
 from bs4 import BeautifulSoup as Soup
 from bookcut.libgen import file_name
 from click import confirm
-from bookcut.automate import downloading
+from bookcut.downloader import downloading
+
+
+def book_find(title, author, publisher, destination, extension, force, libgenurl):
+    try:
+        print('Before:', title, author, publisher, extension)
+        book = Booksearch(title, author, publisher, type, libgenurl)
+        result = book.search()
+        extensions = result['extensions']
+        tb = result['table_data']
+        mirrors = result['mirrors']
+        print(extensions, tb, mirrors)
+        file_details = book.give_result(extensions, tb, mirrors, extension)
+        if file_details is not None:
+            book.cursor(file_details['url'], destination,
+                        file_details['file'], force)
+    except TypeError:
+        # TODO add logger error
+        pass
 
 
 class Booksearch:
+    ''' searching libgen original page and returns book details and mirror link'''
 
-    def __init__(self, title, author, publisher, filetype):
+    def __init__(self, title, author, publisher, filetype, libgenurl):
         self.title = title
         self.author = author
         self.publisher = publisher
         self.filetype = filetype
         self.mirror = None
+        self.libgenurl = libgenurl
 
     def search(self):
         ''' searching libgen and returns table data, extensions and links'''
-        url = mirror_checker()
-        if url is not None:
-            br = mechanize.Browser()
-            br.set_handle_robots(False)   # ignore robots
-            br.set_handle_refresh(False)  #
-            br.addheaders = [('User-agent', 'Firefox')]
+        br = mechanize.Browser()
+        br.set_handle_robots(False)   # ignore robots
+        br.set_handle_refresh(False)  #
+        br.addheaders = [('User-agent', 'Firefox')]
 
-            br.open(url)
-            br.select_form('libgen')
-            input_form = self.title + self.author + self.publisher
-            br.form['req'] = input_form
-            ac = br.submit()
-            html_from_page = ac
-            soup = Soup(html_from_page, 'html.parser')
-            table = soup.find_all('table')[2]
+        br.open(self.libgenurl)
+        br.select_form('libgen')
+        input_form = self.title + self.author + self.publisher
+        br.form['req'] = input_form
+        ac = br.submit()
+        html_from_page = ac
+        soup = Soup(html_from_page, 'html.parser')
+        table = soup.find_all('table')[2]
 
-            table_data = []
-            mirrors = []
-            extensions = []
+        table_data = []
+        mirrors = []
+        extensions = []
 
-            for i in table:
-                j = 0
-                try:
-                    td = i.find_all('td')
-                    for tr in td:
-                        # scrape mirror links
-                        if j == 9:
-                            temp = tr.find('a', href=True)
-                            mirrors.append(temp['href'])
-                        j = j + 1
-                    row = [tr.text for tr in td]
-                    table_data.append(row)
-                    extensions.append(row[8])
-                except:
+        for i in table:
+            j = 0
+            try:
+                td = i.find_all('td')
+                print("TF", td)
+                for tr in td:
+                    # scrape mirror links
+                    if j == 9:
+                        temp = tr.find('a', href=True)
+                        #add also mirror link
+                        mirror_page = self.libgenurl + temp['href']
+                        mirrors.append(mirror_page)
+                    j = j + 1
+                row = [tr.text for tr in td]
+                table_data.append(row)
+                extensions.append(row[8])
+            except:
                     pass
 
             table_details = dict()

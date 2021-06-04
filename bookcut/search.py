@@ -33,12 +33,13 @@ def search_downloader(file, href):
     print("================================\nFile saved as:", filename)
 
 
-def link_finder(link):
+def link_finder(link,mirror_used):
     page = requests.get(link)
     soup = Soup(page.content, 'html.parser')
     searcher = [a['href'] for a in soup.find_all(href=True) if a.text]
     filename = soup.find('input')['value']
-
+    if searcher[0].startswith('http') is False:
+        searcher[0] = mirror_used + searcher[0]
     results = [filename, searcher[0]]
     return results
 

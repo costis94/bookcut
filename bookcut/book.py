@@ -8,13 +8,11 @@ from bookcut.downloader import downloading
 
 def book_find(title, author, publisher, destination, extension, force, libgenurl):
     try:
-        print('Before:', title, author, publisher, extension)
         book = Booksearch(title, author, publisher, type, libgenurl)
         result = book.search()
         extensions = result['extensions']
         tb = result['table_data']
         mirrors = result['mirrors']
-        print(extensions, tb, mirrors)
         file_details = book.give_result(extensions, tb, mirrors, extension)
         if file_details is not None:
             book.cursor(file_details['url'], destination,
@@ -49,39 +47,56 @@ class Booksearch:
         ac = br.submit()
         html_from_page = ac
         soup = Soup(html_from_page, 'html.parser')
-        table = soup.find_all('table')[2]
-
+        links_table = soup.find_all('table')[3]
         table_data = []
         mirrors = []
         extensions = []
-
-        for i in table:
-            j = 0
+        for i in links_table:
             try:
                 td = i.find_all('td')
-                print("TF", td)
                 for tr in td:
                     # scrape mirror links
-                    if j == 9:
-                        temp = tr.find('a', href=True)
-                        #add also mirror link
+                    temp = tr.find('a', href=True)
+                    mirror_page = temp['href']
+                    # add also mirror link
+                    if mirror_page.startswith('http') is False:
                         mirror_page = self.libgenurl + temp['href']
-                        mirrors.append(mirror_page)
-                    j = j + 1
+                    else:
+                        mirror_page = temp['href']
+                    mirrors.append(mirror_page)
+            except Exception as e:
+                    print(e)
+
+            # Parse Details from table_data
+            table = soup.find_all('table')[2]
+            for i in table:
+                try:
+                    td = i.find_all('td')
+                    row = tr.find_all('tr')
+                    row = [tr.text for tr in td]
+                    table_data.append(row)
+                    extensions.append(row[8])
+                    table_details = dict()
+                    table_details['extensions'] = extensions
+                    table_details['table_data'] = table_data
+                    table_details['mirrors'] = mirrors
+                    return table_details
+                except Exception as e:
+                    pass
+
+                '''
                 row = [tr.text for tr in td]
                 table_data.append(row)
                 extensions.append(row[8])
-            except:
-                    pass
-
-            table_details = dict()
-            table_details['extensions'] = extensions
-            table_details['table_data'] = table_data
-            table_details['mirrors'] = mirrors
-            return table_details
-        else:
-            print('\nNo results found or bad Internet connection.')
-            print('Please,try again.')
+                table_details = dict()
+                table_details['extensions'] = extensions
+                table_details['table_data'] = table_data
+                table_details['mirrors'] = mirrors
+                print(table_details)
+                return table_details
+            else:
+                print('\nNo results found or bad Internet connection.')
+                print('Please,try again.') '''
 
     def give_result(self, extensions, table_data, mirrors, filetype):
         try:

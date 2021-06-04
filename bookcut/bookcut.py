@@ -124,8 +124,10 @@ def searching(term):
     if c is not None:
         link = c[0]
         #### TODO: to erase
-        link = 'http://libgen.gs/'+ link
-        details = link_finder(link)
+        mirror_used = mirror_checker()
+        link = mirror_used + link
+        print("First Link:", link)
+        details = link_finder(link, mirror_used)
         filename = details[0]
         file_link = details[1]
         search_downloader(filename, file_link)

@@ -10,8 +10,10 @@ def downloading(link, name, author, file, destination_folder, type):
     soup = Soup(page.content, 'html.parser')
 
     searcher = [a['href'] for a in soup.find_all(href=True) if a.text]
-
     searcher_link = searcher[0]
+    if searcher_link.startswith('http') is False:
+        until_dot = link.split('//')
+        searcher_link = until_dot[0] + '//' + until_dot[1] + searcher_link
     file_downloader(searcher_link, name, author, file, destination_folder, type)
 
 

@@ -38,6 +38,12 @@ setuptools.setup(
             'pyfiglet',
             'tqdm',
             'mechanize'],
+    extras_require={
+        'dev': [
+            'pytest',
+            'pytest-cov',
+        ]
+    },
     include_package_data=True,
     entry_points='''
             [console_scripts]

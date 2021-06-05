@@ -84,20 +84,6 @@ class Booksearch:
                 except Exception as e:
                     pass
 
-                '''
-                row = [tr.text for tr in td]
-                table_data.append(row)
-                extensions.append(row[8])
-                table_details = dict()
-                table_details['extensions'] = extensions
-                table_details['table_data'] = table_data
-                table_details['mirrors'] = mirrors
-                print(table_details)
-                return table_details
-            else:
-                print('\nNo results found or bad Internet connection.')
-                print('Please,try again.') '''
-
     def give_result(self, extensions, table_data, mirrors, filetype):
         try:
             if filetype is not None:

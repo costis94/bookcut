@@ -42,7 +42,7 @@ class Booksearch:
 
         br.open(self.libgenurl)
         br.select_form('libgen')
-        input_form = self.title + self.author + self.publisher
+        input_form = self.title +  ' ' + self.author + ' ' + self.publisher
         br.form['req'] = input_form
         ac = br.submit()
         html_from_page = ac

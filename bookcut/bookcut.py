@@ -1,6 +1,7 @@
 import click
 import pyfiglet
 from os import name, system
+from bookcut import __version__
 from bookcut.mirror_checker import main as mirror_checker
 from bookcut.book import book_find
 from bookcut.organise import main_organiser
@@ -14,7 +15,7 @@ from bookcut.booklist import booklist_main
 
 
 @click.group(name='commands')
-@click.version_option(version="1.3.3")
+@click.version_option(version=__version__)
 def entry():
     """
     for a single book download you can \n

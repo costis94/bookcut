@@ -63,7 +63,7 @@ bookcut details -b 'Homer Iliad'
 * Get a list with *all the books* from an **author**,with an option to save to .txt:
 
 ```bash
-bookcut all-books -author 'Stephen King'
+bookcut all-books --author 'Stephen King'
 ```
 
 * Now you can change some basic settings of BookCut. For more check:

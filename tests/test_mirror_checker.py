@@ -3,6 +3,8 @@ from bookcut.mirror_checker import openLibraryStatus, main as mirror_checker
 from bookcut.mirror_checker import requests
 from requests import ConnectionError
 
+TEST_URL = "http://www.sometesturl.com"
+
 
 @pytest.mark.web
 def test_mirror_availability():
@@ -13,31 +15,31 @@ def test_mirror_availability():
 
 @pytest.mark.parametrize("status_code", [200, 301])
 def test_openLibraryStatus_output_if_it_can_connect(monkeypatch, capsys, status_code):
-    def mock_requests_head(url):
+    def mock_requests_head(_):
         return type("_", (), {"status_code": status_code})
     monkeypatch.setattr(requests, "head", mock_requests_head)
-    assert openLibraryStatus() is None
+    assert openLibraryStatus(TEST_URL) is None
     captured = capsys.readouterr()
-    assert captured.out == "Connected to: http://www.openlibrary.org\n"
+    assert captured.out == f"Connected to: {TEST_URL}\n"
 
 
 def test_openLibraryStatus_output_for_wrong_status_code(monkeypatch, capsys):
-    def mock_requests_head(url):
+    def mock_requests_head(_):
         return type("_", (), {"status_code": 42})
     monkeypatch.setattr(requests, "head", mock_requests_head)
-    assert not openLibraryStatus()
+    assert not openLibraryStatus(TEST_URL)
     captured = capsys.readouterr()
-    assert captured.out == ('Unable to connect to: http://www.openlibrary.org '
+    assert captured.out == (f'Unable to connect to: {TEST_URL} '
                             '\nPlease check your internet connection and try again later.\n')
 
 
 def test_openLibraryStatus_output_on_connection_error(monkeypatch, capsys):
-    def mock_requests_head(url):
+    def mock_requests_head(_):
         raise ConnectionError
     monkeypatch.setattr(requests, "head", mock_requests_head)
-    assert not openLibraryStatus()
+    assert not openLibraryStatus(TEST_URL)
     captured = capsys.readouterr()
-    assert captured.out == ('\nUnable to connect to: http://www.openlibrary.org '
+    assert captured.out == (f'\nUnable to connect to: {TEST_URL} '
                             '\nPlease check your internet connection and try again later.\n')
 
 @pytest.mark.web

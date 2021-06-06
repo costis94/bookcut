@@ -29,9 +29,8 @@ def main():
             pass
 
 
-def openLibraryStatus():
+def openLibraryStatus(url='http://www.openlibrary.org'):
     try:
-        url = 'http://www.openlibrary.org'
         request = requests.head(url)
         if request.status_code == 200 or request.status_code == 301:
             print('Connected to:', url)

@@ -25,8 +25,8 @@ class TestBookCut:
         assert status is not False, "OpenLibrary Status =! 200"
 
     def test_single_book_download(self):
-        title = "Sapiens"
-        author = "Harari"
+        title = "Iliad"
+        author = "Homer"
         publisher = " "
         type_format = ' '
         book = Booksearch(title, author, publisher, type_format, available_mirror)

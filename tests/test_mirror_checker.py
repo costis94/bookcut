@@ -1,6 +1,6 @@
 import pytest
 from bookcut.mirror_checker import openLibraryStatus, main as mirror_checker
-from bookcut.mirror_checker import requests
+from bookcut.mirror_checker import requests, CONNECTION_ERROR_MESSAGE
 from requests import ConnectionError
 
 TEST_URL = "http://www.sometesturl.com"
@@ -29,8 +29,7 @@ def test_openLibraryStatus_output_for_wrong_status_code(monkeypatch, capsys):
     monkeypatch.setattr(requests, "head", mock_requests_head)
     assert not openLibraryStatus(TEST_URL)
     captured = capsys.readouterr()
-    assert captured.out == (f'\nUnable to connect to: {TEST_URL} '
-                            '\nPlease check your internet connection and try again later.\n')
+    assert captured.out == CONNECTION_ERROR_MESSAGE.format(TEST_URL) + "\n"
 
 
 def test_openLibraryStatus_output_on_connection_error(monkeypatch, capsys):
@@ -39,8 +38,8 @@ def test_openLibraryStatus_output_on_connection_error(monkeypatch, capsys):
     monkeypatch.setattr(requests, "head", mock_requests_head)
     assert not openLibraryStatus(TEST_URL)
     captured = capsys.readouterr()
-    assert captured.out == (f'\nUnable to connect to: {TEST_URL} '
-                            '\nPlease check your internet connection and try again later.\n')
+    assert captured.out == CONNECTION_ERROR_MESSAGE.format(TEST_URL) + "\n"
+
 
 @pytest.mark.web
 def test_open_libraryStatus():

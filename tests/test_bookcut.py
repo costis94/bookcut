@@ -4,7 +4,6 @@ from click.testing import CliRunner
 from bookcut import __version__
 from bookcut.bookcut import entry
 from bookcut.mirror_checker import openLibraryStatus, main as mirror_checker
-from bookcut.book import book_find
 from bookcut.book import Booksearch
 
 def test_entry_with_version_option():

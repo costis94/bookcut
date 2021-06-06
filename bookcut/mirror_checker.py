@@ -40,7 +40,7 @@ def openLibraryStatus(url='http://www.openlibrary.org'):
         request = requests.head(url)
         if request.status_code == 200 or request.status_code == 301:
             print('Connected to:', url)
-            return
+            return True
     except ConnectionError:
         pass
     print(CONNECTION_ERROR_MESSAGE.format(url))

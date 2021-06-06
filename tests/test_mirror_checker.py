@@ -18,7 +18,7 @@ def test_openLibraryStatus_output_if_it_can_connect(monkeypatch, capsys, status_
     def mock_requests_head(_):
         return type("_", (), {"status_code": status_code})
     monkeypatch.setattr(requests, "head", mock_requests_head)
-    assert openLibraryStatus(TEST_URL) is None
+    assert openLibraryStatus(TEST_URL)
     captured = capsys.readouterr()
     assert captured.out == f"Connected to: {TEST_URL}\n"
 

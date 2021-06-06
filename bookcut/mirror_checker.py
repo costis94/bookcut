@@ -34,14 +34,12 @@ def openLibraryStatus(url='http://www.openlibrary.org'):
         request = requests.head(url)
         if request.status_code == 200 or request.status_code == 301:
             print('Connected to:', url)
-        else:
-            print('Unable to connect to:', url,
-                  '\nPlease check your internet connection and try again later.')
-            return False
+            return
     except ConnectionError:
-        print('\nUnable to connect to:', url,
-              '\nPlease check your internet connection and try again later.')
-        return False
+        pass
+    print('\nUnable to connect to:', url,
+            '\nPlease check your internet connection and try again later.')
+    return False
 
 
 if __name__ == '__main__':

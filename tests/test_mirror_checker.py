@@ -29,7 +29,7 @@ def test_openLibraryStatus_output_for_wrong_status_code(monkeypatch, capsys):
     monkeypatch.setattr(requests, "head", mock_requests_head)
     assert not openLibraryStatus(TEST_URL)
     captured = capsys.readouterr()
-    assert captured.out == (f'Unable to connect to: {TEST_URL} '
+    assert captured.out == (f'\nUnable to connect to: {TEST_URL} '
                             '\nPlease check your internet connection and try again later.\n')
 
 

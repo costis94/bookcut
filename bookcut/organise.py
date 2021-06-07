@@ -1,12 +1,13 @@
-from bookcut.mirror_checker import openLibraryStatus
+from bookcut.mirror_checker import pageStatus
 import os
 import shutil
 import requests
 import json
 
+OPEN_LIBRARY_URL = 'http://www.openlibrary.org'
 
 def main_organiser(directory):
-    status = openLibraryStatus()
+    status = pageStatus(OPEN_LIBRARY_URL)
     if status is not False:
         book_list = get_books(directory)
         # lists only the files in the given directory

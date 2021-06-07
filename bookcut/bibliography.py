@@ -3,17 +3,18 @@ import json
 import re
 from difflib import SequenceMatcher
 import os
-from bookcut.mirror_checker import openLibraryStatus
+from bookcut.mirror_checker import pageStatus
 
 '''This file is used by ---allbooks command
    It is searching OpenLibrary for all books written from an
    author, and gives the choice to user to save it to a .txt file'''
 
+OPEN_LIBRARY_URL = 'http://www.openlibrary.org'
 
 def main(author, similarity):
     # returns all the books writen by an author from openlibrary
     # using similarity for filtering the results
-    status = openLibraryStatus()
+    status = pageStatus(OPEN_LIBRARY_URL)
     if status is not False:
         search_url = "http://openlibrary.org/search.json?author=" + author
         jason = requests.get(search_url)

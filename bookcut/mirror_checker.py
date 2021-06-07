@@ -35,7 +35,7 @@ def main():
             pass
 
 
-def openLibraryStatus(url='http://www.openlibrary.org'):
+def pageStatus(url):
     try:
         request = requests.head(url)
         if request.status_code == 200 or request.status_code == 301:

@@ -4,6 +4,12 @@ import configparser
 import os
 
 
+CONNECTION_ERROR_MESSAGE = (
+    '\nUnable to connect to: {} '
+    '\nPlease check your internet connection and try again later.'
+)
+
+
 def main():
     '''Check which LibGen mirror is available'''
 
@@ -29,20 +35,16 @@ def main():
             pass
 
 
-def openLibraryStatus():
+def openLibraryStatus(url='http://www.openlibrary.org'):
     try:
-        url = 'http://www.openlibrary.org'
         request = requests.head(url)
         if request.status_code == 200 or request.status_code == 301:
             print('Connected to:', url)
-        else:
-            print('Unable to connect to:', url,
-                  '\nPlease check your internet connection and try again later.')
-            return False
+            return True
     except ConnectionError:
-        print('\nUnable to connect to:', url,
-              '\nPlease check your internet connection and try again later.')
-        return False
+        pass
+    print(CONNECTION_ERROR_MESSAGE.format(url))
+    return False
 
 
 if __name__ == '__main__':

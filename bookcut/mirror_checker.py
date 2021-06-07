@@ -10,16 +10,21 @@ CONNECTION_ERROR_MESSAGE = (
 )
 
 
-def main():
-    '''Check which LibGen mirror is available'''
-
+def settingParser(section, value):
+    "Parsing data from Settings.ini"
     config = configparser.ConfigParser()
     module_path = os.path.dirname(os.path.realpath(__file__))
     settings_ini = os.path.join(module_path, 'Settings.ini')
     config.read(settings_ini)
-    mirrors = config.get("LibGen", "mirrors")
+    mirrors = config.get(section, value)
     mirrors = mirrors.split(',')
+    return mirrors
 
+
+def main():
+    '''Check which LibGen mirror is available'''
+
+    mirrors = settingParser('LibGen', 'mirrors')
     for url in mirrors:
         try:
             r = requests.head(url)

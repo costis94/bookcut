@@ -2,8 +2,8 @@ import click
 import pyfiglet
 from os import name, system
 from bookcut import __version__
-from bookcut.mirror_checker import main as mirror_checker
-from bookcut.book import libgen_book_find
+from bookcut.mirror_checker import main as mirror_checker, settingParser
+from bookcut.book import libgen_book_find, book_searching_in_repos
 from bookcut.organise import main_organiser
 from bookcut.search import search_downloader, link_finder, search
 from bookcut.book_details import main as detailing
@@ -12,7 +12,6 @@ from bookcut.bibliography import save_to_txt
 from bookcut.settings import initial_config, mirrors_append, read_settings
 from bookcut.settings import screen_setting, print_settings, set_destination, path_checker
 from bookcut.booklist import booklist_main
-
 
 @click.group(name='commands')
 @click.version_option(version=__version__)
@@ -63,14 +62,22 @@ def download_from_txt(file, destination, forced, extension):
               default=path_checker())
 @click.option('--extension', '-ext', help='Filetype of e-book for example:pdf')
 @click.option('--forced', is_flag=True)
-def book(book, author, publisher, destination, extension, forced):
+@click.option('--repos', default=None)
+def book(book, author, publisher, destination, extension, forced, repos):
     if author != ' ':
         click.echo(f'\nSearching for {book.capitalize()} by {author.capitalize()}')
     else:
         click.echo(f'\nSearching for {book.capitalize()}')
-    url = mirror_checker()
-    if url is not None:
-        libgen_book_find(book, author, publisher, destination, extension, forced, url)
+    # set default libgen search
+    if repos is None:
+        url = mirror_checker()
+        if url is not None:
+            libgen_book_find(book, author, publisher, destination,
+                             extension, forced, url)
+    else:
+        book_searching_in_repos(book, author, repos)
+
+
 
 
 def clean_screen(setting):

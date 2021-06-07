@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file.
 
 
+## [1.3.5] - 06_Jun_2021
+- Fixed Issue#9
+
+### Fixed
+- Organise options known bug that could not move some files fixed.
+
 ## [1.3.1] - 11_Aug_2020
 
 ### Fixed

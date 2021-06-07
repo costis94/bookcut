@@ -1,4 +1,4 @@
-from bookcut.book import book_find
+from bookcut.book import libgen_book_find
 from bookcut.mirror_checker import main as mirror_checker
 
 def file_list(filename):
@@ -34,4 +34,4 @@ def booklist_main(file,destination,forced,extension):
                 if a != "":
                     print(f"~[{temp}/{many}] Searching for:", a,)
                     temp = temp + 1
-                    book_find(a, '', '', destination, extension, forced, url)
+                    libgen_book_find(a, '', '', destination, extension, forced, url)

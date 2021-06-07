@@ -3,7 +3,7 @@ import pyfiglet
 from os import name, system
 from bookcut import __version__
 from bookcut.mirror_checker import main as mirror_checker
-from bookcut.book import book_find
+from bookcut.book import libgen_book_find
 from bookcut.organise import main_organiser
 from bookcut.search import search_downloader, link_finder, search
 from bookcut.book_details import main as detailing
@@ -70,7 +70,7 @@ def book(book, author, publisher, destination, extension, forced):
         click.echo(f'\nSearching for {book.capitalize()}')
     url = mirror_checker()
     if url is not None:
-        book_find(book, author, publisher, destination, extension, forced, url)
+        libgen_book_find(book, author, publisher, destination, extension, forced, url)
 
 
 def clean_screen(setting):

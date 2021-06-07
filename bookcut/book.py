@@ -6,7 +6,7 @@ from click import confirm
 from bookcut.downloader import downloading
 
 
-def book_find(title, author, publisher, destination, extension, force, libgenurl):
+def libgen_book_find(title, author, publisher, destination, extension, force, libgenurl):
     try:
         book = Booksearch(title, author, publisher, type, libgenurl)
         result = book.search()

@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup as Soup
 from bookcut.libgen import file_name
 from click import confirm
 from bookcut.downloader import downloading
-from bookcut.archiv import archiv
+from bookcut.arxiv import arxiv
 
 def libgen_book_find(title, author, publisher, destination, extension, force, libgenurl):
     ''' searching @ LibGen for a single book '''
@@ -30,8 +30,8 @@ def book_searching_in_repos(book, author, repos):
     available_repos = settingParser('Repositories', 'available_repos')
     for i in repos:
         if i in available_repos:
-            if i == 'archiv':
-                archiv(book, author)
+            if i == 'arxiv':
+                arxiv(book, author)
 
 
 class Booksearch:

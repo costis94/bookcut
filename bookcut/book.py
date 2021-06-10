@@ -4,7 +4,9 @@ from bs4 import BeautifulSoup as Soup
 from bookcut.libgen import file_name
 from click import confirm
 from bookcut.downloader import downloading
-from bookcut.arxiv import arxiv
+from bookcut.arxiv import arxiv, libgen_repo
+import pandas as pd
+
 
 def libgen_book_find(title, author, publisher, destination, extension, force, libgenurl):
     ''' searching @ LibGen for a single book '''
@@ -31,8 +33,14 @@ def book_searching_in_repos(book, author, repos):
     for i in repos:
         if i in available_repos:
             if i == 'arxiv':
-                arxiv(book, author)
-
+                arxiv_data = arxiv(book, author)
+                # titles = arxiv_data.keys()
+                # urls = arxiv_data.values()
+            if i == 'libgen':
+                print("LIBGEN")
+                libgen_data = libgen_repo(book)
+    df = pd.concat([libgen_data, arxiv_data])
+    print(df)
 
 class Booksearch:
     ''' searching libgen original page and returns book details and mirror link'''

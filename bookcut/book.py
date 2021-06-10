@@ -37,9 +37,9 @@ def book_searching_in_repos(book, author, repos):
                 # titles = arxiv_data.keys()
                 # urls = arxiv_data.values()
             if i == 'libgen':
-                print("LIBGEN")
                 libgen_data = libgen_repo(book)
-    df = pd.concat([libgen_data, arxiv_data])
+    df = pd.concat([libgen_data, arxiv_data],ignore_index=True)
+    df.index += 1
     print(df)
 
 class Booksearch:

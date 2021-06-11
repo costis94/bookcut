@@ -1,12 +1,14 @@
 import requests
 import json
 from requests import ConnectionError
+from bookcut.mirror_checker import pageStatus
 
 '''This file is using by ---details command.
    It's main use is to search OpenLibrary for a books' details.
    It's input can be the name of the book or the ISBN.
 '''
 
+OPEN_LIBRARY_URL = 'http://www.openlibrary.org'
 
 def main(term):
     # searching OpenLibrary and prints the details of a book
@@ -14,6 +16,7 @@ def main(term):
         if term is None:
             term =input("Please enter the book and the author, or the ISBN of the book.")
         term = term.replace(' ', '+')
+        pageStatus(OPEN_LIBRARY_URL)
         search_url = "http://openlibrary.org/search.json?q=" + term
         jason = requests.get(search_url)
         jason = jason.text
@@ -45,3 +48,6 @@ def main(term):
         url = "http://www.openlibrary.com"
         print('Unable to connect to:', url,
               '\nPlease check your internet connection and try again later.')
+    except json.decoder.JSONDecodeError:
+        print('An error occured during the retrieving of data.')
+        print('Please try again later.')

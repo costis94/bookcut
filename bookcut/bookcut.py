@@ -2,16 +2,17 @@ import click
 import pyfiglet
 from os import name, system
 from bookcut import __version__
-from bookcut.mirror_checker import main as mirror_checker
-from bookcut.book import libgen_book_find
+from bookcut.mirror_checker import main as mirror_checker, settingParser
+from bookcut.book import libgen_book_find, book_searching_in_repos
 from bookcut.organise import main_organiser
-from bookcut.search import search_downloader, link_finder, search
+from bookcut.search import choose_a_book
 from bookcut.book_details import main as detailing
 from bookcut.bibliography import main as allbooks
 from bookcut.bibliography import save_to_txt
 from bookcut.settings import initial_config, mirrors_append, read_settings
 from bookcut.settings import screen_setting, print_settings, set_destination, path_checker
 from bookcut.booklist import booklist_main
+from bookcut.repositories import libgen_repo
 
 
 @click.group(name='commands')
@@ -70,7 +71,8 @@ def book(book, author, publisher, destination, extension, forced):
         click.echo(f'\nSearching for {book.capitalize()}')
     url = mirror_checker()
     if url is not None:
-        libgen_book_find(book, author, publisher, destination, extension, forced, url)
+        libgen_book_find(book, author, publisher,
+                         destination, extension, forced, url)
 
 
 def clean_screen(setting):
@@ -119,19 +121,15 @@ def bibliography(author, ratio):
 @entry.command(name='search',
                help='Search LibGen and choose a book to download')
 @click.option('--term', '-t', help='Term for searching')
-def searching(term):
+@click.option('--repos', default=None)
+def searching(term, repos):
     print('Searching for:', term.capitalize())
-    c = search(term)
-    if c is not None:
-        link = c[0]
-        #### TODO: to erase
-        mirror_used = mirror_checker()
-        link = mirror_used + link
-        print("First Link:", link)
-        details = link_finder(link, mirror_used)
-        filename = details[0]
-        file_link = details[1]
-        search_downloader(filename, file_link)
+    # set default libgen search
+    if repos is None:
+        libgen_data = libgen_repo(term)
+        choose_a_book(libgen_data)
+    else:
+        book_searching_in_repos(term, repos)
 
 
 @entry.command(name='details', help='Search the details of a book')

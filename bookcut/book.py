@@ -1,12 +1,16 @@
-from bookcut.mirror_checker import main as mirror_checker
+from bookcut.mirror_checker import settingParser
 import mechanize
 from bs4 import BeautifulSoup as Soup
 from bookcut.libgen import file_name
 from click import confirm
 from bookcut.downloader import downloading
+from bookcut.repositories import arxiv, libgen_repo
+import pandas as pd
+from bookcut.search import choose_a_book
 
 
 def libgen_book_find(title, author, publisher, destination, extension, force, libgenurl):
+    ''' searching @ LibGen for a single book '''
     try:
         book = Booksearch(title, author, publisher, type, libgenurl)
         result = book.search()
@@ -20,6 +24,27 @@ def libgen_book_find(title, author, publisher, destination, extension, force, li
     except TypeError:
         # TODO add logger error
         pass
+
+
+def book_searching_in_repos(term, repos):
+    # search a book in various Repositories
+    if repos is None:
+        libgen_data = libgen_repo(term)
+        return libgen_data
+    repos = repos.split(',')
+    repos = [i.strip(' ') for i in repos]
+    available_repos = settingParser('Repositories', 'available_repos')
+    df = pd.DataFrame({'Author(s)': [], 'Title': [], 'Size': [],
+                      'Extension': []})
+    for i in repos:
+        if i in available_repos:
+            if i == 'arxiv':
+                arxiv_data = arxiv(term)
+                df = pd.concat([df, arxiv_data], ignore_index=True)
+            if i == 'libgen':
+                libgen_data = libgen_repo(term)
+                df = pd.concat([df, libgen_data], ignore_index=True)
+    choose_a_book(df)
 
 
 class Booksearch:
@@ -42,7 +67,7 @@ class Booksearch:
 
         br.open(self.libgenurl)
         br.select_form('libgen')
-        input_form = self.title +  ' ' + self.author + ' ' + self.publisher
+        input_form = self.title + ' ' + self.author + ' ' + self.publisher
         br.form['req'] = input_form
         ac = br.submit()
         html_from_page = ac

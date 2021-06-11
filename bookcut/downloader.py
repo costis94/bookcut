@@ -57,3 +57,11 @@ def pathfinder():
     else:
         os.makedirs(path)
     return path
+
+
+def filename_refubrished(filename):
+    # for valid filenames without special characters
+    special_char = [':', '/', '"\"', "?", "*", "<", ">", "|"]
+    for i in special_char:
+        filename = filename.replace(i, ' ')
+    return filename

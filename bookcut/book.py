@@ -27,22 +27,23 @@ def libgen_book_find(title, author, publisher, destination, extension, force, li
 
 
 def book_searching_in_repos(term, repos):
-    '''search a book in various Repositories'''
+    # search a book in various Repositories
     if repos is None:
         libgen_data = libgen_repo(term)
         return libgen_data
     repos = repos.split(',')
     repos = [i.strip(' ') for i in repos]
     available_repos = settingParser('Repositories', 'available_repos')
+    df = pd.DataFrame({'Author(s)': [], 'Title': [], 'Size': [],
+                      'Extension': []})
     for i in repos:
         if i in available_repos:
             if i == 'arxiv':
                 arxiv_data = arxiv(term)
+                df = pd.concat([df, arxiv_data], ignore_index=True)
             if i == 'libgen':
                 libgen_data = libgen_repo(term)
-    df = pd.concat([libgen_data, arxiv_data], ignore_index=True)
-    df.index += 1
-    print(df[['Author(s)', 'Title', 'Size', 'Extension']])
+                df = pd.concat([df, libgen_data], ignore_index=True)
     choose_a_book(df)
 
 

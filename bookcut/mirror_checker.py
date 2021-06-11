@@ -21,7 +21,7 @@ def settingParser(section, value):
     return mirrors
 
 
-def main():
+def main(verbose=True):
     '''Check which LibGen mirror is available'''
 
     mirrors = settingParser('LibGen', 'mirrors')
@@ -31,7 +31,8 @@ def main():
             if r.status_code == 200 or r.status_code == 301:
                 status = True
             if status is True:
-                print('Connected to:', url)
+                if verbose is True:
+                    print('Connected to:', url)
                 return url
                 break
             else:
@@ -40,11 +41,12 @@ def main():
             pass
 
 
-def pageStatus(url):
+def pageStatus(url, verbose=True):
     try:
         request = requests.head(url)
         if request.status_code == 200 or request.status_code == 301:
-            print('Connected to:', url)
+            if verbose is True:
+                print('Connected to:', url)
             return True
     except ConnectionError:
         pass

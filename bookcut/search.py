@@ -1,5 +1,5 @@
 from bookcut.mirror_checker import main as mirror_checker
-from bookcut.downloader import pathfinder
+from bookcut.downloader import pathfinder, filename_refubrished
 from bs4 import BeautifulSoup as Soup
 import mechanize
 import pandas as pd
@@ -7,6 +7,7 @@ import os
 import requests
 from tqdm import tqdm
 
+RESULT_ERROR ='\nNo results found or bad Internet connection.'
 
 def search_downloader(file, href):
     # search_downloader downloads the book
@@ -213,41 +214,45 @@ def single_search():
 
 def choose_a_book(dataframe):
     # asks the user which book to download from the printed DataFrame
-    dataframe.index += 1
-    print(dataframe[['Author(s)', 'Title', 'Size', 'Extension']])
+    if dataframe.empty is False:
+        dataframe.index += 1
+        print(dataframe[['Author(s)', 'Title', 'Size', 'Extension']])
 
-    urls = dataframe['Url'].to_list()
-    titles = dataframe['Title'].to_list()
-    extensions = dataframe['Extension'].to_list()
-    choices = []
-    temp = len(urls) + 1
-    for i in range(1, temp):
-        choices.append(str(i))
-    choices.append('C')
-    choices.append('c')
-    try:
-        while True:
-            tell_me = str(input('\n\nPlease enter a number from 1 to {number}'
-                                ' to download a book or press "C" to abort'
-                                ' search: '.format(number=len(urls))))
-            if tell_me in choices:
-                if tell_me == 'C' or tell_me == 'c':
-                    print("Aborted!")
-                    return None
-                else:
-                    c = int(tell_me) - 1
-                    filename = titles[c]+'.'+extensions[c]
-                    if urls[c].startswith('https://export.arxiv.org/'):
-                        search_downloader(filename, urls[c])
-                        return False
+        urls = dataframe['Url'].to_list()
+        titles = dataframe['Title'].to_list()
+        extensions = dataframe['Extension'].to_list()
+        choices = []
+        temp = len(urls) + 1
+        for i in range(1, temp):
+            choices.append(str(i))
+        choices.append('C')
+        choices.append('c')
+        try:
+            while True:
+                tell_me = str(input('\n\nPlease enter a number from 1 to {number}'
+                                    ' to download a book or press "C" to abort'
+                                    ' search: '.format(number=len(urls))))
+                if tell_me in choices:
+                    if tell_me == 'C' or tell_me == 'c':
+                        print("Aborted!")
+                        return None
                     else:
-                        mirror_used = mirror_checker(False)
-                        link = mirror_used + urls[c]
-                        details = link_finder(link, mirror_used)
-                        file_link = details[1]
-                        search_downloader(filename, file_link)
-                        return False
-    except ValueError:
-        print('\nNo results found or bad Internet connection.')
-        print('Please,try again.')
-        return None
+                        c = int(tell_me) - 1
+                        filename = titles[c]+'.'+extensions[c]
+                        filename = filename_refubrished(filename)
+                        if urls[c].startswith('https://export.arxiv.org/'):
+                            search_downloader(filename, urls[c])
+                            return False
+                        else:
+                            mirror_used = mirror_checker(False)
+                            link = mirror_used + urls[c]
+                            details = link_finder(link, mirror_used)
+                            file_link = details[1]
+                            search_downloader(filename, file_link)
+                            return False
+        except ValueError:
+            print(RESULT_ERROR)
+            print('Please,try again.')
+            return None
+    else:
+        print(RESULT_ERROR)

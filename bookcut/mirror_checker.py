@@ -10,23 +10,29 @@ CONNECTION_ERROR_MESSAGE = (
 )
 
 
-def main():
-    '''Check which LibGen mirror is available'''
-
+def settingParser(section, value):
+    "Parsing data from Settings.ini"
     config = configparser.ConfigParser()
     module_path = os.path.dirname(os.path.realpath(__file__))
     settings_ini = os.path.join(module_path, 'Settings.ini')
     config.read(settings_ini)
-    mirrors = config.get("LibGen", "mirrors")
+    mirrors = config.get(section, value)
     mirrors = mirrors.split(',')
+    return mirrors
 
+
+def main(verbose=True):
+    '''Check which LibGen mirror is available'''
+
+    mirrors = settingParser('LibGen', 'mirrors')
     for url in mirrors:
         try:
             r = requests.head(url)
             if r.status_code == 200 or r.status_code == 301:
                 status = True
             if status is True:
-                print('Connected to:', url)
+                if verbose is True:
+                    print('Connected to:', url)
                 return url
                 break
             else:
@@ -35,11 +41,12 @@ def main():
             pass
 
 
-def pageStatus(url):
+def pageStatus(url, verbose=True):
     try:
         request = requests.head(url)
         if request.status_code == 200 or request.status_code == 301:
-            print('Connected to:', url)
+            if verbose is True:
+                print('Connected to:', url)
             return True
     except ConnectionError:
         pass

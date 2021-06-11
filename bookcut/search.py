@@ -42,7 +42,6 @@ def link_finder(link, mirror_used):
     try:
         filename = soup.find('input')['value']
     except TypeError:
-        print('Invalid FileName')
         filename = None
     if searcher[0].startswith('http') is False:
         searcher[0] = mirror_used + searcher[0]
@@ -214,6 +213,8 @@ def single_search():
 
 def choose_a_book(dataframe):
     # asks the user which book to download from the printed DataFrame
+    dataframe.index += 1
+    print(dataframe[['Author(s)', 'Title', 'Size', 'Extension']])
 
     urls = dataframe['Url'].to_list()
     titles = dataframe['Title'].to_list()
@@ -235,13 +236,12 @@ def choose_a_book(dataframe):
                     return None
                 else:
                     c = int(tell_me) - 1
-                    print(urls[c])
                     filename = titles[c]+'.'+extensions[c]
                     if urls[c].startswith('https://export.arxiv.org/'):
                         search_downloader(filename, urls[c])
                         return False
                     else:
-                        mirror_used = mirror_checker()
+                        mirror_used = mirror_checker(False)
                         link = mirror_used + urls[c]
                         details = link_finder(link, mirror_used)
                         file_link = details[1]

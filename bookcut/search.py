@@ -9,6 +9,7 @@ from tqdm import tqdm
 
 
 def search_downloader(file, href):
+    # search_downloader downloads the book
     response = requests.get(href, stream=True)
     total_size = int(response.headers.get('content-length'))
     inMb = total_size / 1000000
@@ -33,7 +34,8 @@ def search_downloader(file, href):
     print("================================\nFile saved as:", filename)
 
 
-def link_finder(link,mirror_used):
+def link_finder(link, mirror_used):
+    # link_ finder is searching Libgen for download link and filename
     page = requests.get(link)
     soup = Soup(page.content, 'html.parser')
     searcher = [a['href'] for a in soup.find_all(href=True) if a.text]
@@ -211,6 +213,8 @@ def single_search():
 
 
 def choose_a_book(dataframe):
+    # asks the user which book to download from the printed DataFrame
+
     urls = dataframe['Url'].to_list()
     titles = dataframe['Title'].to_list()
     extensions = dataframe['Extension'].to_list()

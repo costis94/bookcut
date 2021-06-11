@@ -8,6 +8,7 @@ ARCHIV_BASE = 'https://export.arxiv.org'
 
 
 def arxiv(term):
+    # Searching Arxiv.org and returns a DataFrame with the founded results.
     status = pageStatus(ARCHIV_URL)
     if status:
         br = mechanize.Browser()
@@ -56,6 +57,7 @@ def arxiv(term):
 
 
 def libgen_repo(term):
+    # Searching LibGen and returns results DataFrame
     url = mirror_checker()
     if url is not None:
         br = mechanize.Browser()
@@ -69,7 +71,7 @@ def libgen_repo(term):
         br.form['req'] = input_form
         ac = br.submit()
         html_from_page = ac
-        html_soup = soup(html_from_page,'html.parser')
+        html_soup = soup(html_from_page, 'html.parser')
         table = html_soup.find_all('table')[2]
 
         table_data = []

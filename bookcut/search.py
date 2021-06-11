@@ -37,7 +37,11 @@ def link_finder(link,mirror_used):
     page = requests.get(link)
     soup = Soup(page.content, 'html.parser')
     searcher = [a['href'] for a in soup.find_all(href=True) if a.text]
-    filename = soup.find('input')['value']
+    try:
+        filename = soup.find('input')['value']
+    except TypeError:
+        print('Invalid FileName')
+        filename = None
     if searcher[0].startswith('http') is False:
         searcher[0] = mirror_used + searcher[0]
     results = [filename, searcher[0]]
@@ -206,5 +210,40 @@ def single_search():
             print('Please,try again.')
 
 
-if __name__ == '__main__':
-    search(input('Term: '))
+def choose_a_book(dataframe):
+    urls = dataframe['Url'].to_list()
+    titles = dataframe['Title'].to_list()
+    extensions = dataframe['Extension'].to_list()
+    choices = []
+    temp = len(urls) + 1
+    for i in range(1, temp):
+        choices.append(str(i))
+    choices.append('C')
+    choices.append('c')
+    try:
+        while True:
+            tell_me = str(input('\n\nPlease enter a number from 1 to {number}'
+                                ' to download a book or press "C" to abort'
+                                ' search: '.format(number=len(urls))))
+            if tell_me in choices:
+                if tell_me == 'C' or tell_me == 'c':
+                    print("Aborted!")
+                    return None
+                else:
+                    c = int(tell_me) - 1
+                    print(urls[c])
+                    filename = titles[c]+'.'+extensions[c]
+                    if urls[c].startswith('https://export.arxiv.org/'):
+                        search_downloader(filename, urls[c])
+                        return False
+                    else:
+                        mirror_used = mirror_checker()
+                        link = mirror_used + urls[c]
+                        details = link_finder(link, mirror_used)
+                        file_link = details[1]
+                        search_downloader(filename, file_link)
+                        return False
+    except ValueError:
+        print('\nNo results found or bad Internet connection.')
+        print('Please,try again.')
+        return None

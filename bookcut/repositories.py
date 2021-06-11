@@ -1,48 +1,58 @@
 from bs4 import BeautifulSoup as soup
-import requests
 import mechanize
-from bookcut.mirror_checker import pageStatus, main as mirror_checker
+from bookcut.mirror_checker import pageStatus, main as mirror_checker, CONNECTION_ERROR_MESSAGE
 import pandas as pd
 
-ARCHIV_URL = 'http://export.arxiv.org/'
-ARCHIV_SEARCH_URL = ("http://search.arxiv.org:8081/?query={}&in=")
+ARCHIV_URL = 'https://export.arxiv.org/find/grp_cs,grp_econ,grp_eess,grp_math,grp_physics,grp_q-bio,grp_q-fin,grp_stat'
+ARCHIV_BASE = 'https://export.arxiv.org'
 
 
-def arxiv(book, author):
+def arxiv(term):
     status = pageStatus(ARCHIV_URL)
     if status:
-        # preparing search term for url
-        book = book.split(' ')
-        title_term = ''
-        for i in book:
-            title_term = title_term + "+" + i
-        author_term = ''
-        if ' ' in author:
-            author = author.split(' ')
-            for i in author:
-                author_term = author_term + "+" + i
-        fullterm = author_term + title_term
-        fullterm = fullterm.strip(' ')
-        search_url = ARCHIV_SEARCH_URL.format(fullterm)  # search page url
+        br = mechanize.Browser()
+        br.set_handle_robots(False)   # ignore robots
+        br.set_handle_refresh(False)  #
+        br.addheaders = [('User-agent', 'Firefox')]
 
-        # parsing page data
-        req = requests.get(search_url)
-        search_page_html = soup(req.content, 'html.parser')
-        # extracting and preparing book title results
-        raw_titles = search_page_html.findAll('span', {'class': 'title'})
+        br.open(ARCHIV_URL)
+        br.select_form(nr=0)
+        input_form = term
+        br.form['query'] = input_form
+        ac = br.submit()
+        html_from_page = ac
+        html_soup = soup(html_from_page, 'html.parser')
+
+        t = html_soup.findAll('div', {'class': 'list-title mathjax'})
         titles = []
-        for i in raw_titles:
-            titles.append(i.text)
-        # extracting and preparing book urls
-        raw_urls = search_page_html.findAll('td', {'class': 'snipp'})
-        book_urls = []
-        for i in raw_urls:
-            s = i.find('a')
-            book_urls.append('http://search.arxiv.org:8081/'+s['href'])
-        arxiv_data = dict(zip(titles,book_urls))
-        print(len(titles), len(book_urls))
-        arxiv_df = pd.DataFrame({'Title': titles, 'Url': book_urls})
+        for i in t:
+            raw = i.text
+            raw = raw.replace('Title: ', '')
+            raw = raw.replace('\n', "")
+            titles.append(raw)
+        authors = []
+        auth_soup = html_soup.findAll('div', {'class': 'list-authors'})
+        for i in auth_soup:
+            raw = i.text
+            raw = raw.replace('Authors:', '')
+            raw = raw.replace('\n', "")
+            authors.append(raw)
+        extensions = []
+        urls = []
+        ext = html_soup.findAll('span', {'class': 'list-identifier'})
+        for i in ext:
+            a = i.findAll('a')
+            link = a[1]['href']
+            extensions.append(str(a[1].text))
+            urls.append(ARCHIV_BASE+link)
+
+        arxiv_df = pd.DataFrame({'Title': titles, 'Author(s)': authors,
+                                 'Url': urls, 'Extension': extensions})
+
         return arxiv_df
+    else:
+        print(CONNECTION_ERROR_MESSAGE.format('ArXiv'))
+        return None
 
 
 def libgen_repo(term):
@@ -79,7 +89,6 @@ def libgen_repo(term):
                 row = [tr.text for tr in td]
                 table_data.append(row)
                 extensions.append(row[8])
-
             except:
                 pass
 
@@ -89,7 +98,6 @@ def libgen_repo(term):
             del j[8:15]
         headers = ['Author(s)', 'Title', 'Publisher', 'Year', 'Pages',
                    'Language', 'Size', 'Extension']
-
 
         tabular = pd.DataFrame(table_data)
         tabular.columns = headers

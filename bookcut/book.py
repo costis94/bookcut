@@ -1,11 +1,12 @@
-from bookcut.mirror_checker import main as mirror_checker, settingParser
+from bookcut.mirror_checker import settingParser
 import mechanize
 from bs4 import BeautifulSoup as Soup
 from bookcut.libgen import file_name
 from click import confirm
 from bookcut.downloader import downloading
-from bookcut.arxiv import arxiv, libgen_repo
+from bookcut.repositories import arxiv, libgen_repo
 import pandas as pd
+from bookcut.search import choose_a_book
 
 
 def libgen_book_find(title, author, publisher, destination, extension, force, libgenurl):
@@ -25,22 +26,25 @@ def libgen_book_find(title, author, publisher, destination, extension, force, li
         pass
 
 
-def book_searching_in_repos(book, author, repos):
+def book_searching_in_repos(term, repos):
     '''search a book in various Repositories'''
+    if repos is None:
+        libgen_data = libgen_repo(term)
+        return libgen_data
     repos = repos.split(',')
     repos = [i.strip(' ') for i in repos]
     available_repos = settingParser('Repositories', 'available_repos')
     for i in repos:
         if i in available_repos:
             if i == 'arxiv':
-                arxiv_data = arxiv(book, author)
-                # titles = arxiv_data.keys()
-                # urls = arxiv_data.values()
+                arxiv_data = arxiv(term)
             if i == 'libgen':
-                libgen_data = libgen_repo(book)
-    df = pd.concat([libgen_data, arxiv_data],ignore_index=True)
+                libgen_data = libgen_repo(term)
+    df = pd.concat([libgen_data, arxiv_data], ignore_index=True)
     df.index += 1
-    print(df)
+    print(df[['Author(s)', 'Title', 'Size', 'Extension']])
+    choose_a_book(df)
+
 
 class Booksearch:
     ''' searching libgen original page and returns book details and mirror link'''
@@ -62,7 +66,7 @@ class Booksearch:
 
         br.open(self.libgenurl)
         br.select_form('libgen')
-        input_form = self.title +  ' ' + self.author + ' ' + self.publisher
+        input_form = self.title + ' ' + self.author + ' ' + self.publisher
         br.form['req'] = input_form
         ac = br.submit()
         html_from_page = ac

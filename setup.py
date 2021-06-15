@@ -42,6 +42,8 @@ setuptools.setup(
         'dev': [
             'pytest',
             'pytest-cov',
+            'pre-commit',
+            'black',
         ]
     },
     include_package_data=True,

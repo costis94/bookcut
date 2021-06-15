@@ -4,8 +4,10 @@ import pathlib
 
 if sys.version_info.major < 3:
     print("\nPython 2 is not supported! \nPlease upgrade to Python 3.\n")
-    print("Installation of BookCut stopped, please try again with\n"
-          'a newer version of Python!')
+    print(
+        "Installation of BookCut stopped, please try again with\n"
+        "a newer version of Python!"
+    )
     sys.exit(1)
 
 # The directory containing this file
@@ -16,7 +18,7 @@ README = (HERE / "README.md").read_text()
 
 setuptools.setup(
     name="BookCut",
-    python_requires='>3.5.2',
+    python_requires=">3.5.2",
     version="1.3.6",
     author="Costis94",
     author_email="gravitymusician@gmail.com",
@@ -26,31 +28,30 @@ setuptools.setup(
     url="https://github.com/costis94/bookcut",
     packages=setuptools.find_packages(),
     classifiers=[
-            "Programming Language :: Python :: 3",
-            "License :: OSI Approved :: MIT License",
-            "Operating System :: OS Independent",
-        ],
+        "Programming Language :: Python :: 3",
+        "License :: OSI Approved :: MIT License",
+        "Operating System :: OS Independent",
+    ],
     install_requires=[
-            'pandas',
-            'click>=7.1.2',
-            'requests',
-            'beautifulsoup4',
-            'pyfiglet',
-            'tqdm',
-            'mechanize'],
+        "pandas",
+        "click>=7.1.2",
+        "requests",
+        "beautifulsoup4",
+        "pyfiglet",
+        "tqdm",
+        "mechanize",
+    ],
     extras_require={
-        'dev': [
-            'pytest',
-            'pytest-cov',
-            'pre-commit',
-            'black',
+        "dev": [
+            "pytest",
+            "pytest-cov",
+            "pre-commit",
+            "black",
         ]
     },
     include_package_data=True,
-    entry_points='''
+    entry_points="""
             [console_scripts]
             bookcut=bookcut.bookcut:entry
-            ''',
-
-
-        )
+            """,
+)

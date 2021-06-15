@@ -1,5 +1,6 @@
 from bookcut.mirror_checker import main as mirror_checker
-from bookcut.downloader import pathfinder, filename_refubrished
+from bookcut.downloader import filename_refubrished
+from bookcut.settings import path_checker
 from bs4 import BeautifulSoup as Soup
 import mechanize
 import pandas as pd
@@ -18,7 +19,7 @@ def search_downloader(file, href):
     filename = file
     print("\nDownloading...\n", "Total file size:", inMb, 'MB')
 
-    path = pathfinder()
+    path = path_checker()
 
     filename = os.path.join(path, filename)
     # progress bar

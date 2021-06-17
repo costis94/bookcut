@@ -1,14 +1,16 @@
 from bs4 import BeautifulSoup as soup
-import mechanize
 from bookcut.mirror_checker import (
     pageStatus,
     main as mirror_checker,
     CONNECTION_ERROR_MESSAGE,
 )
+import mechanize
 import pandas as pd
+import requests
 
 ARCHIV_URL = "https://export.arxiv.org/find/grp_cs,grp_econ,grp_eess,grp_math,grp_physics,grp_q-bio,grp_q-fin,grp_stat"
 ARCHIV_BASE = "https://export.arxiv.org"
+OPEN_ACCESS_BUTTON = "https://api.openaccessbutton.org/find"
 
 
 def arxiv(term):
@@ -128,3 +130,17 @@ def libgen_repo(term):
         # create emptyDataframe
         df = pd.DataFrame()
         return df
+
+
+def open_access_button(doi, title):
+    status = pageStatus(OPEN_ACCESS_BUTTON)
+    if status:
+        if doi is not None:
+            query = {"doi": doi}
+        else:
+            query = {"title": title}
+        req = requests.get(OPEN_ACCESS_BUTTON, params=query)
+        response = req.json()
+        return response
+    else:
+        print(CONNECTION_ERROR_MESSAGE.format("Open Access Button"))

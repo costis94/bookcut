@@ -2,6 +2,19 @@
 All notable changes to this project will be documented in this file.
 
 
+##[1.3.7]
+
+### Add
+- Black autoformatting
+
+### Fix
+-Issue#7
+
+
+## [1.3.6]
+- Repos option added. ArXiv is now included.
+- Fixed known bugs
+
 ## [1.3.5] - 06_Jun_2021
 - Fixed Issue#9
 

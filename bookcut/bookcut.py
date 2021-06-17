@@ -9,6 +9,7 @@ from bookcut.search import choose_a_book
 from bookcut.book_details import main as detailing
 from bookcut.bibliography import main as allbooks
 from bookcut.bibliography import save_to_txt
+from bookcut.article import article_search
 from bookcut.settings import initial_config, mirrors_append, read_settings
 from bookcut.settings import (
     screen_setting,
@@ -164,6 +165,16 @@ def searching(term, repos):
 )
 def details(book):
     detailing(book)
+
+
+@entry.command(name="article", help="Search for an article")
+@click.option("--doi", "-d", help="Enter D.O.I. of the article", default=None)
+@click.option("--title", "-t", help="Enter title of article", default=None)
+def article(doi, title):
+    if doi or title is not None:
+        article_search(doi, title)
+    else:
+        print("Not correct input. \nPlease use: bookcut article --help")
 
 
 @entry.command(name="config", help="BookCut configuration settings")

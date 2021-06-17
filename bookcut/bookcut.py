@@ -142,7 +142,10 @@ def bibliography(author, ratio):
                 break
 
 
-@entry.command(name="search", help="Search LibGen and choose a book to download")
+@entry.command(
+    name="search",
+    help="Search LibGen or other repositories and choose a book to download",
+)
 @click.option("--term", "-t", help="Term for searching")
 @click.option("--repos", default=None)
 def searching(term, repos):

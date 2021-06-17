@@ -1,3 +1,4 @@
+
 <img src="https://i.imgur.com/ZUX2ehE.png" width="256" height="69">
 
 [![Downloads](https://pepy.tech/badge/bookcut)](https://pepy.tech/project/bookcut) ![pypi](https://img.shields.io/pypi/v/pip.svg)
@@ -28,6 +29,8 @@ pip3 install bookcut
 
 
 ## Usage
+
+### Searching and downloading books:
 
 * Download a **single** book:
 
@@ -71,8 +74,21 @@ bookcut details -b 'Homer Iliad'
 ```bash
 bookcut all-books -author 'Stephen King'
 ```
+***
+### Searching and downloading articles:
+Now you can use bookcut to search and download **scientific articles**.
 
-* Now you can change some basic settings of BookCut. For more check:
+ - Search with the Digital Object Identifier:
+```
+ bookcut article --doi "10.1126/science.196.4287.293"
+```
+- Search with the exact title:
+```  
+ bookcut article --title "Ribulose Bisphosphate Carboxylase  A Two-Layered, Square-Shaped Molecule of Symmetry"
+```
+****
+### Configuration
+* Also you can change some basic settings of BookCut. For more check:
 
 ```bash
 bookcut config --help

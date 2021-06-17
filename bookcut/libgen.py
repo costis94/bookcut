@@ -3,16 +3,16 @@ import requests
 
 
 def epub_finder(soup):
-    table = soup.find('table', attrs={'class': 'c'})
-    tb = table.find_all('tr')
+    table = soup.find("table", attrs={"class": "c"})
+    tb = table.find_all("tr")
     data = []
     epub = "epub"
     for row in tb:
-        col = row.find_all('td')
+        col = row.find_all("td")
         col = [ele.text.strip() for ele in col]
         xxx = [ele for ele in col if ele]
 
-        false_results = ['[1]', '[2]', '[3]', '[4]', '[5]']
+        false_results = ["[1]", "[2]", "[3]", "[4]", "[5]"]
         if false_results == xxx:
             pass
         else:
@@ -28,12 +28,12 @@ def epub_finder(soup):
 
 
 def file_name(url):
-    print('URL: ',url)
+    print("URL: ", url)
     page = requests.get(url)
     try:
-        soup = soupa(page.content, 'html.parser')
-        r = soup.find('input')['value']
-        r.replace('\n', '')
+        soup = soupa(page.content, "html.parser")
+        r = soup.find("input")["value"]
+        r.replace("\n", "")
         return r
     except TypeError:
         return None

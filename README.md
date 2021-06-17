@@ -1,5 +1,3 @@
-
-
 <img src="https://i.imgur.com/ZUX2ehE.png" width="256" height="69">
 
 [![Downloads](https://pepy.tech/badge/bookcut)](https://pepy.tech/project/bookcut) ![pypi](https://img.shields.io/pypi/v/pip.svg)
@@ -8,7 +6,8 @@
 BookCut is a Python Command Line Interface tool, that help the user to download **free e-books**,
 **organise** them in folders by genre, **retrieve** book details by *ISBN* or *title*,
 get a list with **all the books from a writer** and save them to .txt file.
-*With the help of LibGen and OpenLibrary*
+
+*With the help of LibGen, ArXiv and OpenLibrary.*
 
 
 ## REQUIREMENTS
@@ -47,12 +46,19 @@ bookcut list "FreeEbooksToDownload.txt"
 ```bash
 bookcut organise "full/path/to/folder"
 ```
-
+***
 * Search **LibGen**, output the results and download e-book:
 
 ```bash
 bookcut search -t 'Homer Odyssey'
 ```
+
+* Search more book repositories with the **--repos** option:
+``` bash
+bookcut search -t 'Homer Odyssey' --repos 'libgen,arxiv'
+```
+  **Available book repositories: Libgen, ArXiv**
+***
 
 * Get the **details** of a book by **title and author**, or simply **ISBN**.
 
@@ -73,13 +79,14 @@ bookcut config --help
 ```
 
 ## TO-DO
+* Add Tests
 * Add documentation
 * Add more sources with free e-books
 * Fix organiser so it can use all types of files
 * Add a logger.
 
 ## Copyrights
-Please use the bookcut app to download **only free e-books** that are legally distributing through *Libgen.*
+Please use the bookcut app to download **only free e-books** that are legally distributing through *BookCut repositories.*
 Bookcut contributors do not have any responsibility for the use of the tool.
 ## Contributing
 Pull requests are welcome, this is my first project so be kind.

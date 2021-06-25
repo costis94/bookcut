@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup as soupa
 import requests
+from bookcut.downloader import file_downloader
 
 
 def epub_finder(soup):
@@ -37,3 +38,21 @@ def file_name(url):
         return r
     except TypeError:
         return None
+
+
+def md5_search(md5, url, destination):
+    # function that using by book command and searching for a specific book in LibGen with a given md5 value
+    mirror_url = url + "/ads.php?md5=" + md5
+    req = requests.get(mirror_url)
+    soup = soupa(req.content, "html.parser")
+    html = soup.find("input", attrs={"id": "textarea-example"})
+    filename = html["value"]
+    url_soup = soup.findAll("table", attrs={"id": "main"})
+
+    urls = []
+    for j in url_soup:
+        a = j.findAll("a", href=True)
+        for i in a:
+            urls.append(i["href"])
+    download_url = url + urls[0]
+    file_downloader(download_url, "", "", filename, destination, "")

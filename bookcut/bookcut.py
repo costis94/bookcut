@@ -80,14 +80,20 @@ def download_from_txt(file, destination, forced, extension):
 )
 @click.option("--extension", "-ext", help="Filetype of e-book for example:pdf")
 @click.option("--forced", is_flag=True)
-def book(book, author, publisher, destination, extension, forced):
+@click.option("--md5", help="Md5 search for a specific book version.", default=None)
+def book(book, author, publisher, destination, extension, forced, md5):
     if author != " ":
         click.echo(f"\nSearching for {book.capitalize()} by {author.capitalize()}")
     else:
         click.echo(f"\nSearching for {book.capitalize()}")
     url = mirror_checker()
     if url is not None:
-        libgen_book_find(book, author, publisher, destination, extension, forced, url)
+        if md5 is not None:
+            md5_search(md5, url, destination)
+        else:
+            libgen_book_find(
+                book, author, publisher, destination, extension, forced, url
+            )
 
 
 def clean_screen(setting):

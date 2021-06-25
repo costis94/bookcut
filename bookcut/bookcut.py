@@ -19,6 +19,7 @@ from bookcut.settings import (
 )
 from bookcut.booklist import booklist_main
 from bookcut.repositories import libgen_repo
+from bookcut.libgen import md5_search
 
 
 @click.group(name="commands")
@@ -69,7 +70,7 @@ def download_from_txt(file, destination, forced, extension):
     name="book",
     help="Download a book in epub format, by inserting" "\n the title and the author",
 )
-@click.option("--book", "-b", help="Title of Book", required=True)
+@click.option("--book", "-b", help="Title of Book", default=" ")
 @click.option("--author", "-a", help="The author of the Book", default=" ")
 @click.option("--publisher", "-p", default="")
 @click.option(
@@ -82,13 +83,16 @@ def download_from_txt(file, destination, forced, extension):
 @click.option("--forced", is_flag=True)
 @click.option("--md5", help="Md5 search for a specific book version.", default=None)
 def book(book, author, publisher, destination, extension, forced, md5):
-    if author != " ":
+    if book == " " and md5 is None:
+        print("Invalid Input! Check <bookcut book --help> for more.")
+    elif author != " " and book != " ":
         click.echo(f"\nSearching for {book.capitalize()} by {author.capitalize()}")
-    else:
+    elif book != " ":
         click.echo(f"\nSearching for {book.capitalize()}")
     url = mirror_checker()
     if url is not None:
         if md5 is not None:
+            print("\nSearching for book with md5: ", md5)
             md5_search(md5, url, destination)
         else:
             libgen_book_find(

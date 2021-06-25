@@ -8,7 +8,7 @@ import os
 import requests
 from tqdm import tqdm
 
-RESULT_ERROR = "\nNo results found or bad Internet connection."
+RESULT_ERROR = "\nNo results found or bad Internet connection.\nPlease try again!"
 
 
 def search_downloader(file, href):

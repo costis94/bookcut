@@ -2,6 +2,7 @@
 <img src="https://i.imgur.com/ZUX2ehE.png" width="256" height="69">
 
 [![Downloads](https://pepy.tech/badge/bookcut)](https://pepy.tech/project/bookcut) ![pypi](https://img.shields.io/pypi/v/pip.svg)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 
 BookCut is a Python Command Line Interface tool, that help the user to download **free e-books**,

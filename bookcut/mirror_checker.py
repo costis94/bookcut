@@ -5,8 +5,8 @@ import os
 
 
 CONNECTION_ERROR_MESSAGE = (
-    '\nUnable to connect to: {} '
-    '\nPlease check your internet connection and try again later.'
+    "\nUnable to connect to: {} "
+    "\nPlease check your internet connection and try again later."
 )
 
 
@@ -14,17 +14,17 @@ def settingParser(section, value):
     "Parsing data from Settings.ini"
     config = configparser.ConfigParser()
     module_path = os.path.dirname(os.path.realpath(__file__))
-    settings_ini = os.path.join(module_path, 'Settings.ini')
+    settings_ini = os.path.join(module_path, "Settings.ini")
     config.read(settings_ini)
     mirrors = config.get(section, value)
-    mirrors = mirrors.split(',')
+    mirrors = mirrors.split(",")
     return mirrors
 
 
 def main(verbose=True):
-    '''Check which LibGen mirror is available'''
+    """Check which LibGen mirror is available"""
 
-    mirrors = settingParser('LibGen', 'mirrors')
+    mirrors = settingParser("LibGen", "mirrors")
     for url in mirrors:
         try:
             r = requests.head(url)
@@ -32,7 +32,7 @@ def main(verbose=True):
                 status = True
             if status is True:
                 if verbose is True:
-                    print('Connected to:', url)
+                    print("Connected to:", url)
                 return url
                 break
             else:
@@ -46,7 +46,7 @@ def pageStatus(url, verbose=True):
         request = requests.head(url)
         if request.status_code == 200 or request.status_code == 301:
             if verbose is True:
-                print('Connected to:', url)
+                print("Connected to:", url)
             return True
     except ConnectionError:
         pass
@@ -54,5 +54,5 @@ def pageStatus(url, verbose=True):
     return False
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
